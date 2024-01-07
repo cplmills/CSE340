@@ -1,6 +1,155 @@
+:root {
+  --siteblue: rgb(17, 166, 201);
+}
+
 /******* Change Box Model ***************/
 *,
 *:before,
 *:after {
   box-sizing: border-box;
 }
+
+body {
+  font-family: sans-serif;
+  background-image: url('../images/site/checkerboard.jpg');
+
+}
+
+.blueTxt {
+  color: var(--siteblue);
+}
+
+h2 {
+  font-weight: bold;
+}
+
+#wrapper {
+  border: 5px solid var(--siteblue);
+  border-radius: 1rem;
+  background-color: white;
+  padding: 0 10px;
+  margin: 3rem;
+}
+
+header a {
+  text-decoration: none;
+  color: black;
+}
+
+nav ul {
+  display: flex;
+  color: white;
+  flex-direction: row;
+  flex-wrap: nowrap;  
+  justify-content: space-evenly;
+  background-color: black;
+  padding: 1rem;
+  list-style-type: none;
+  clear: both;
+}
+
+.siteName {
+  display: block;
+  float: left;
+  padding: 2rem 1rem;
+  font-size: 2rem;
+}
+
+#tools {
+  display: block;
+  float: right;
+  padding: 2rem 1rem;
+  font-size: 1.2rem;
+}
+
+#banner {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+
+}
+
+#banner img {
+  grid-column-start: 1;
+  grid-column-end: 4;
+  grid-row-start: 1;
+  grid-row-end: 2;
+  padding: 0 3rem;
+  justify-self: center;
+}
+
+#banner_vehicle_info {
+  grid-column-start: 1;
+  grid-column-end: 2;
+  grid-row-start: 1;
+  grid-row-end: 2;
+  background-color: rgba(255,255,255,0.5);
+  padding: 0 2rem;
+  width: auto;
+}
+
+
+#banner_submit {
+  background-color: var(--siteblue);
+  padding: 10px 30px;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+  
+#vehicle_upgrades ul {
+  list-style-type: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+#vehicle_upgrades li {
+  padding: 20px;
+  text-align: center;
+}
+
+#vehicle_upgrades img {
+  max-width: 100%;
+  height: auto;
+  margin-bottom: 10px;
+}
+
+#vehicle_upgrades .upgrade-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--siteblue);
+  min-height: 100px;
+}
+
+/* desktop styles */
+@media only screen and (min-width: 828px) {
+  #vehicle_info {
+    display: grid;
+    grid-template-columns:  1fr 1fr 2fr;
+    grid-template-rows: repeat(1fr,3);
+  }
+  
+  #vehicle_upgrades {
+    grid-column-start: 1;
+    grid-column-end: 3;
+    grid-row-start: 1;
+    grid-row-end: 2;
+  }
+  
+  #vehicle_upgrades a {
+    text-decoration: underline;
+  }
+  
+  #vehicle_reviews {
+    grid-column-start: 3;
+    grid-column-end: 4;
+  }
+  
+  #vehicle_reviews ul li {
+    padding: 1rem 0;
+  }
+}
+
+
