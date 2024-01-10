@@ -1,5 +1,7 @@
 :root {
-  --siteblue: rgb(17, 166, 201);
+  --sitemain: rgb(201, 17, 17);
+  
+
 }
 
 /******* Change Box Model ***************/
@@ -16,7 +18,7 @@ body {
 }
 
 .blueTxt {
-  color: var(--siteblue);
+  color: var(--sitemain);
 }
 
 h2 {
@@ -24,7 +26,7 @@ h2 {
 }
 
 #wrapper {
-  border: 5px solid var(--siteblue);
+  border: 5px solid var(--sitemain);
   border-radius: 1rem;
   background-color: white;
   padding: 0 10px;
@@ -42,10 +44,26 @@ nav ul {
   flex-direction: row;
   flex-wrap: nowrap;  
   justify-content: space-evenly;
-  background-color: black;
+  background: linear-gradient(180deg, rgba(2,0,36,1) 0%, rgba(207,17,17,1) 15%, rgba(207,17,17,1) 85%, rgba(45,0,0,1) 100%);
   padding: 1rem;
   list-style-type: none;
   clear: both;
+}
+
+nav a {
+  display: inline-block;
+  height: 100%;
+}
+
+nav ul li {
+  padding: 10px;
+  width: 100%;
+  text-align: center;
+}
+
+nav ul li:hover {
+  background: white;
+  color: black;
 }
 
 .siteName {
@@ -89,10 +107,11 @@ nav ul {
 
 
 #banner_submit {
-  background-color: var(--siteblue);
+  background-color: var(--sitemain);
   padding: 10px 30px;
   font-size: 1.2rem;
   font-weight: bold;
+  color: white;
 }
 
   
@@ -119,7 +138,7 @@ nav ul {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: var(--siteblue);
+  background-color: var(--sitemain);
   min-height: 100px;
 }
 
@@ -128,7 +147,6 @@ nav ul {
   #vehicle_info {
     display: grid;
     grid-template-columns:  1fr 1fr 2fr;
-    grid-template-rows: repeat(1fr,3);
   }
   
   #vehicle_upgrades {
