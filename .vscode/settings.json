@@ -1,0 +1,16 @@
+{
+    "sqltools.connections": [
+        {
+            "pgOptions": {
+                "ssl": {
+                    "passphrase": "NNZCxlcWonVan3FpPFRseyp5AvT6MvrQ"
+                }
+            },
+            "previewLimit": 50,
+            "server": "localhost",
+            "driver": "PostgreSQL",
+            "connectString": "postgres://cse340_2:NNZCxlcWonVan3FpPFRseyp5AvT6MvrQ@dpg-cmhkku7109ks739fkr1g-a.singapore-postgres.render.com/cse340_2_bvam",
+            "name": "Render.com"
+        }
+    ]
+}

@@ -64,6 +64,8 @@ nav ul li {
 nav ul li:hover {
   background: white;
   color: black;
+  transition: background-color 0.5s ease; /* Smooth transition on hover */
+
 }
 
 .siteName {
@@ -93,6 +95,7 @@ nav ul li:hover {
   grid-row-end: 2;
   padding: 0 3rem;
   justify-self: center;
+  max-width: 100%;
 }
 
 #banner_vehicle_info {
@@ -143,17 +146,23 @@ nav ul li:hover {
 }
 
 /* desktop styles */
-@media only screen and (min-width: 828px) {
+@media only screen and (max-width: 828px) {
+  #wrapper {
+    margin: 0;
+
+  }
+  
   #vehicle_info {
     display: grid;
     grid-template-columns:  1fr 1fr 2fr;
+    grid-template-rows: auto;
   }
   
   #vehicle_upgrades {
     grid-column-start: 1;
-    grid-column-end: 3;
-    grid-row-start: 1;
-    grid-row-end: 2;
+    grid-column-end: 4;
+    grid-row-start: 2;
+    grid-row-end: 3;
   }
   
   #vehicle_upgrades a {
@@ -161,7 +170,7 @@ nav ul li:hover {
   }
   
   #vehicle_reviews {
-    grid-column-start: 3;
+    grid-column-start: 1;
     grid-column-end: 4;
   }
   
