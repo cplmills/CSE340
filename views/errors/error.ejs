@@ -1,0 +1,9 @@
+<!-- Check for a heading and display a heading and title if exists -->
+<% if (title) { %>
+    <h1><%= title %></h1>
+    <% } else {
+      res.redirect('/')
+    } %>
+
+<!-- display an error message -->
+<%- message %>
