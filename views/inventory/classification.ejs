@@ -1,0 +1,12 @@
+<!-- Check for a heading and display a heading and title if exists -->
+<% if (title) { %>
+    <h1><%= title %></h1>
+    <% } else {
+      res.redirect('/')
+    } %>
+
+<!-- Future functionality to display an error message -->
+<%# messages() %>
+
+<!-- Display main content -->
+<%- grid %>
