@@ -1,7 +1,5 @@
 :root {
   --sitemain: rgb(201, 17, 17);
-  
-
 }
 
 /******* Change Box Model ***************/
@@ -19,6 +17,12 @@ body {
 
 .blueTxt {
   color: var(--sitemain);
+}
+
+h1 {
+  padding: 0;
+  padding-left: 1rem;
+  margin: 0;
 }
 
 h2 {
@@ -40,24 +44,28 @@ header a {
 
 nav ul {
   display: flex;
-  color: white;
   flex-direction: row;
-  flex-wrap: nowrap;  
+  flex-wrap: wrap;  
   justify-content: space-evenly;
   background: linear-gradient(180deg, rgba(2,0,36,1) 0%, rgba(207,17,17,1) 15%, rgba(207,17,17,1) 85%, rgba(45,0,0,1) 100%);
   padding: 1rem;
   list-style-type: none;
   clear: both;
+  margin: 0;
+  margin-bottom: 0.5rem;
 }
 
 nav a {
   display: inline-block;
   height: 100%;
+  color: white;
+  text-decoration: none;
+  font-size: 1.5rem;
 }
 
 nav ul li {
   padding: 10px;
-  width: 100%;
+  width: auto;
   text-align: center;
 }
 
@@ -65,20 +73,23 @@ nav ul li:hover {
   background: white;
   color: black;
   transition: background-color 0.5s ease; /* Smooth transition on hover */
+}
 
+nav ul li:hover a {
+  color: inherit;
 }
 
 .siteName {
   display: block;
   float: left;
-  padding: 2rem 1rem;
+  padding: 1rem;
   font-size: 2rem;
 }
 
 #tools {
   display: block;
   float: right;
-  padding: 2rem 1rem;
+  padding: 1rem;
   font-size: 1.2rem;
 }
 
@@ -145,10 +156,92 @@ nav ul li:hover {
   min-height: 100px;
 }
 
-/* desktop styles */
+#invWrapper {
+  position: relative;
+  display: flex;
+  clear: both;
+  overflow: auto;
+}
+
+#invItem_Image {
+  display: block;
+  float: left;
+  padding: 2rem;
+}
+
+#invItem_Details {
+  display: block;
+  float: right;
+  max-width: 50%;
+}
+
+.price {
+  font-size: 64px;
+  color: var(--sitemain);
+  padding-right: 2rem;
+  margin: 0;
+}
+
+#invItem_Price p {
+  display: block;
+  margin: 0;
+  padding: 0;
+}
+
+.polaroid {
+  position: relative;
+  display: inline-block;
+  margin: 2%; /* Use percentage for margin */
+  padding: 2%; /* Use percentage for padding */
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transform: rotate(-2deg);
+  width: 100%; /* Use percentage for width */
+}
+
+.polaroid::before,
+.polaroid::after {
+  content: "";
+  position: absolute;
+  width: 50%;
+  height: 5px; /* Use percentage for height */
+  background-color: #ccc;
+  bottom: -3px;
+}
+
+.polaroid::before {
+  left: 0;
+}
+
+.polaroid::after {
+  right: 0;
+}
+
+/* Style for the image inside the polaroid */
+.polaroid img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+}
+
+footer {
+  border-top: 1px solid rgb(50, 50, 50);
+
+}
+
+.copyright, footer a {
+  display: inline-block;
+  text-align: center;
+  padding: 1rem;
+  margin: 0;
+}
+
+/* mobile styles */
 @media only screen and (max-width: 828px) {
   #wrapper {
     margin: 0;
+    padding: 0;
 
   }
   
@@ -177,6 +270,38 @@ nav ul li:hover {
   #vehicle_reviews ul li {
     padding: 1rem 0;
   }
+
+  #invWrapper {
+    display: block;
+  }
+
+  #invItem_Image {
+    display: block;
+    padding: 1rem 0;
+    width: 100%;
+  }
+  
+  #invItem_Details {
+    display: block;
+    padding: 0 1rem;
+    float: none;
+  }
+
+  .polaroid {
+    display: block;
+    transform: none;
+    width: 100%; /* Make it full-width on smaller screens */
+    max-width: none; /* Remove the maximum width */
+    margin: 0; /* Use percentage for margin */
+    padding: 0; /* Use percentage for padding */
+    width: 100%; /* Use percentage for width */
+  }
+
+  .polaroid::before,
+  .polaroid::after {
+    display: none; /* Hide the border pseudo-elements on smaller screens */
+  }
+
 }
 
 

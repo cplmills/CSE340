@@ -57,6 +57,41 @@ Util.buildClassificationGrid = async function(data){
   return grid
 }
 
+/* **************************************
+* Build the inventory view HTML
+* ************************************ */
+Util.buildInventoryItem = async function(invitem){
+  let item = ""
+  if(invitem.length > 0){
+    let data = invitem[0]
+      item += '<div id="invWrapper">'
+      item += '<div id="invItem_Image">'
+      item +=  '<img src="' + data.inv_image 
+      +'" class="polaroid" alt="Image of '+ data.inv_color + ' ' + data.inv_make + ' ' + data.inv_model 
+      +' on CSE Motors" /></div>'
+      
+      item += '<div id="invItem_Details">'
+      item += '<h2>'
+      item += data.inv_year + " - " + data.inv_make + ' ' + data.inv_model + ' - ' + data.inv_color 
+      item += '</h2>'
+      item += '<p>' + data.inv_description + '</p>'
+
+      item += '<p><b>Make          :</b> ' + data.inv_make + '</p>'
+      item += '<p><b>Model         :</b> ' + data.inv_model + '</p>'
+      item += '<p><b>Year          :</b> ' + data.inv_year + '</p>'
+      item += '<p><b>Milage        :</b> ' + data.inv_miles.toLocaleString() + '</p>'
+      item += '<p><b>Color         :</b> <span style="display: inline-block; border: 1px solid black; width: 16px; background-color: ' + data.inv_color + ';">&nbsp</span> ' + data.inv_color + '</p>'
+      item += '<p class="price">$' + new Intl.NumberFormat('en-US').format(data.inv_price) + '</p>'
+      item += '</div>'
+
+      item += '</div>'
+
+  } else { 
+    item += '<p class="notice">Sorry, no matching vehicles could be found.</p>'
+  }
+  return item
+}
+
 /* ****************************************
  * Middleware For Handling Errors
  * Wrap other function in this for 
