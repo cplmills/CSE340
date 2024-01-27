@@ -304,4 +304,27 @@ footer {
 
 }
 
+#inv-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 10px; /* Adjust the gap between items as needed */
+  max-width: 100%; /* Adjust the maximum width as needed */
+  margin: 0 auto; /* Center the container horizontally */
+}
 
+#inv-display {
+  list-style-type: none;
+  padding: 0;
+  width: 100%;
+}
+
+#inv-display li {
+  flex: 0 0 calc(30% - 10px); /* Adjust the width of each item as needed, considering margin */
+  border: 1px solid black;
+  border-radius: 5px;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+  padding: 10px;
+  margin: 5px; /* Add spacing between items */
+  box-sizing: border-box;
+}

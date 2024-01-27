@@ -26,11 +26,15 @@ Util.getNav = async function (req, res, next) {
 
 /* **************************************
 * Build the classification view HTML
-* ************************************ */
+* ************************************ 
+
+CHANGE EACH ITEM TO A DIV AND NOT AN LI
+*/
 Util.buildClassificationGrid = async function(data){
   let grid
   if(data.length > 0){
-    grid = '<ul id="inv-display">'
+    grid += '<div id="inv-container">'
+    grid += '<ul id="inv-display">'
     data.forEach(vehicle => { 
       grid += '<li>'
       grid +=  '<a href="../../inv/detail/'+ vehicle.inv_id 
@@ -50,7 +54,7 @@ Util.buildClassificationGrid = async function(data){
       grid += '</div>'
       grid += '</li>'
     })
-    grid += '</ul>'
+    grid += '</ul></div>'
   } else { 
     grid += '<p class="notice">Sorry, no matching vehicles could be found.</p>'
   }
