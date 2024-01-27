@@ -1,0 +1,107 @@
+@media only screen and (max-width: 828px) {
+    #wrapper {
+        margin: 0;
+        padding: 0;
+    }
+    
+    #vehicle_info {
+        display: grid;
+        grid-template-columns:  1fr 1fr 2fr;
+        grid-template-rows: auto;
+    }
+    
+    #vehicle_upgrades {
+      grid-column-start: 1;
+      grid-column-end: 4;
+      grid-row-start: 2;
+      grid-row-end: 3;
+    }
+    
+    #vehicle_upgrades a {
+      text-decoration: underline;
+    }
+    
+    #vehicle_reviews {
+      grid-column-start: 1;
+      grid-column-end: 4;
+    }
+    
+    #vehicle_reviews ul li {
+      padding: 1rem 0;
+    }
+  
+    #invWrapper {
+      display: block;
+    }
+  
+    #inv-container {
+        display: flex;
+        flex-wrap: wrap;
+        margin: 0; /* Remove default margin */
+        padding: 0; /* Remove default padding */
+        width: 100%;
+    }
+    
+    .inv-display {
+        display: block;
+        box-sizing: border-box;
+        border: 1px solid black;
+        border-radius: 0;
+        margin: 0; /* Remove margin */
+        padding: 0; /* Remove padding */
+        width: 100%;
+    }
+    
+    .inv-display img {
+        width: 100%;
+    }
+    
+    .inv-display a {
+        display: block;
+    }
+    
+    .inv-display a {
+        display: block;
+    }
+
+
+    #invItem_Image {
+      display: block;
+      padding: 1rem 0;
+      width: 100%;
+    }
+    
+    #invItem_Details {
+      display: block;
+      padding: 0 1rem;
+      float: none;
+    }
+  
+    .namePrice {
+        padding-left: 1rem;
+        padding-bottom: 1rem;
+    }
+
+    .namePrice hr {
+        display: none;
+    }
+
+    .polaroid {
+      display: block;
+      transform: none;
+      width: 100%; /* Make it full-width on smaller screens */
+      max-width: none; /* Remove the maximum width */
+      margin: 0; /* Use percentage for margin */
+      padding: 0; /* Use percentage for padding */
+    }
+  
+    .polaroid::before,
+    .polaroid::after {
+      display: none; /* Hide the border pseudo-elements on smaller screens */
+    }
+  
+    .errorimg {
+      width: 90%;
+      margin: 0;
+    }
+  }

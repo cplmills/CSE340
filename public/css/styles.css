@@ -227,7 +227,7 @@ nav ul li:hover a {
 
 footer {
   border-top: 1px solid rgb(50, 50, 50);
-
+  margin-top: 1rem;
 }
 
 .copyright, footer a {
@@ -237,94 +237,69 @@ footer {
   margin: 0;
 }
 
-/* mobile styles */
-@media only screen and (max-width: 828px) {
-  #wrapper {
-    margin: 0;
-    padding: 0;
-
-  }
-  
-  #vehicle_info {
-    display: grid;
-    grid-template-columns:  1fr 1fr 2fr;
-    grid-template-rows: auto;
-  }
-  
-  #vehicle_upgrades {
-    grid-column-start: 1;
-    grid-column-end: 4;
-    grid-row-start: 2;
-    grid-row-end: 3;
-  }
-  
-  #vehicle_upgrades a {
-    text-decoration: underline;
-  }
-  
-  #vehicle_reviews {
-    grid-column-start: 1;
-    grid-column-end: 4;
-  }
-  
-  #vehicle_reviews ul li {
-    padding: 1rem 0;
-  }
-
-  #invWrapper {
-    display: block;
-  }
-
-  #invItem_Image {
-    display: block;
-    padding: 1rem 0;
-    width: 100%;
-  }
-  
-  #invItem_Details {
-    display: block;
-    padding: 0 1rem;
-    float: none;
-  }
-
-  .polaroid {
-    display: block;
-    transform: none;
-    width: 100%; /* Make it full-width on smaller screens */
-    max-width: none; /* Remove the maximum width */
-    margin: 0; /* Use percentage for margin */
-    padding: 0; /* Use percentage for padding */
-    width: 100%; /* Use percentage for width */
-  }
-
-  .polaroid::before,
-  .polaroid::after {
-    display: none; /* Hide the border pseudo-elements on smaller screens */
-  }
-
-}
-
 #inv-container {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: space-around;
   gap: 10px; /* Adjust the gap between items as needed */
   max-width: 100%; /* Adjust the maximum width as needed */
   margin: 0 auto; /* Center the container horizontally */
 }
 
-#inv-display {
-  list-style-type: none;
+.inv-display {
+  /* list-style-type: none; */
   padding: 0;
-  width: 100%;
-}
-
-#inv-display li {
-  flex: 0 0 calc(30% - 10px); /* Adjust the width of each item as needed, considering margin */
+  /* flex: 0 0 calc(30% - 10px); Adjust the width of each item as needed, considering margin */
   border: 1px solid black;
   border-radius: 5px;
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
   padding: 10px;
   margin: 5px; /* Add spacing between items */
   box-sizing: border-box;
+  max-width: 550px;
 }
+
+.inv-display img {
+  max-width: 450px;
+}
+
+.inv-display a {
+  text-decoration: none;
+  color: black;
+}
+
+.inv-display a:hover {
+  color: var(--sitemain);
+}
+
+#errorcontainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 1rem;
+}
+
+.errormsg {
+  color: var(--sitemain);
+  font-size: 2rem;
+  margin: 0;
+  margin-bottom: 1rem;
+  margin-left: 1rem;
+}
+
+.errortext {
+  font-size: 0.5rem;
+  margin: 0;
+}
+
+.errorbody {
+  margin: 1rem;
+  font-size: 2rem;
+}
+
+.errorimg {
+  max-width: 30%;
+  margin: 0 auto;
+}
+

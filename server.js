@@ -35,7 +35,10 @@ app.use("/inv", inventoryRoute)
 
 // File Not Found Route - must be last route in list
 app.use(async (req, res, next) => {
-  next({status: 404, message: 'Sorry, we appear to have lost that page.'})
+  next({
+    status: 404, 
+    message: '<h2>Sorry, we appear to have lost that page.</h2><img class="errorimg" src="../../images/errors/404.jpg">'
+  })
 })
 
 /* ***********************
@@ -58,11 +61,25 @@ app.listen(port, () => {
 *************************/
 app.use(async (err, req, res, next) => {
   let nav = await utilities.getNav()
+  let err_html = ''
+  
+  // if there is a stack, display it
+  try {
+    let err_lines = err.stack.split('\n')
+    err_html = err_lines.map(line => '<p class="errortext">'+line+'</p>').join('')
+  } catch {
+    err_html = ''
+  }
   console.error(`Error at: "${req.originalUrl}": ${err.message}`)
-  if(err.status == 404){ message = err.message} else {message = 'Oh no! There was a crash. Maybe try a different route?'}
+  if(err.status === 404){ 
+    message = err.message
+  } else {
+    message = '<h2 class="errormsg">Oh no! There was a crash.</h2><img class="errorimg" src="../../images/errors/500.jpg"><p class="errorbody">Maybe try a different route?</p><p class="errortext">'+ err_html + '</p>'
+  }
+  let title = err.status || 'Server Error'
   res.render("errors/error", {
-    title: err.status || 'Server Error',
-    message,
-    nav
+  title,
+  message,
+  nav
   })
 })
