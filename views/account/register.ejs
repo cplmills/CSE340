@@ -1,0 +1,43 @@
+
+
+<div class="login-box">
+<div class="form-container">
+    <form action="/account/register" method="post">
+      <fieldset>
+        <legend>Registration Form</legend>
+  
+        <label for="account_firstname">First Name:</label>
+        <input type="text" id="account_firstname" name="account_firstname" required>
+  
+        <label for="account_lastname">Last Name:</label>
+        <input type="text" id="account_lastname" name="account_lastname" required>
+  
+        <label for="account_email">Email Address:</label>
+        <input type="email" id="account_email" name="account_email" required>
+  
+        <label for="account_password">Password:</label>
+        <input type="password" id="account_password" name="account_password" pattern="(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{12,}" title="Passwords must be a minimum of 12 characters and include 1 capital letter, 1 number, and 1 special character" required>
+        <button id="pswdBtn">Show Password</button>
+        <div class="password-info button">Passwords must be a minimum of 12 characters and include 1 capital letter, 1 number, and 1 special character</div>
+  
+      </fieldset>
+  
+      <button type="submit">Register</button>
+    </form>
+  </div>
+  </div>
+
+<script>
+    const pswdBtn = document.querySelector("#pswdBtn");
+    pswdBtn.addEventListener("click", function() {
+    const pswdInput = document.getElementById("account_password");
+    const type = pswdInput.getAttribute("type");
+    if (type == "password") {
+        pswdInput.setAttribute("type", "text");
+        pswdBtn.innerHTML = "Hide Password";
+    } else {
+        pswdInput.setAttribute("type", "password");
+        pswdBtn.innerHTML = "Show Password";
+    }
+    });
+</script>

@@ -303,7 +303,7 @@ footer {
   margin: 0 auto;
 }
 
-.login-container {
+.form-container {
   background-color: #fff;
   border: 1px solid #ccc;
   padding: 20px;
@@ -312,19 +312,19 @@ footer {
   width: 300px;
 }
 
-.login-container label {
+label {
   display: block;
   margin-bottom: 8px;
 }
 
-.login-container input {
+input {
   width: 100%;
   padding: 8px;
   margin-bottom: 16px;
   box-sizing: border-box;
 }
 
-.login-container button {
+button {
   background-color: var(--sitemain);
   color: #fff;
   padding: 10px;
@@ -332,9 +332,11 @@ footer {
   border-radius: 4px;
   cursor: pointer;
   width: 100%;
+  margin: 10px 0;
+  border: 1px solid var(--sitemain)
 }
 
-.login-container button:hover {
+button:hover {
   background-color: white;
   color: var(--sitemain);
   border: 1px solid var(--sitemain);
@@ -346,4 +348,15 @@ footer {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.password-info {
+  margin-top: 8px;
+  font-size: 12px;
+  color: #777;
+}
+
+#pswdBtn {
+  font-size: 0.8rem;
+  padding: 4px;
 }
