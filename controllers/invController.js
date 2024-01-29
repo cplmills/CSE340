@@ -57,34 +57,32 @@ invCont.buildManagementView = async function (req, res, next) {
 * ************************** */
 invCont.buildAddClassificationView = async function (req, res, next) {
   const inventoryId = req.params.inventoryId
-  const item = await utilities.buildAddClassificationView()
-    let   nav  = await utilities.getNav()
+    let nav = await utilities.getNav()
     const vehicleName = "Inventory Managment: New Classification"
     res.render("./inventory/add-classification", {
       title: vehicleName,
       nav,
-      item,
       errors: null,
     })
   }
 
-  /* ****************************************
+/* ****************************************
 *  Process New Classification
 * *************************************** */
-async function registerClassification(req, res) {
+invCont.registerClassification = async function (req, res, next) {
   let nav = await utilities.getNav()
   const { classification_name } = req.body
 
-  const invResult = await inventoryModel.setInventoryClassification(
+  const invResult = await invModel.setInventoryClassification(
     classification_name
   )
-console.log(regResult)
   if (invResult) {
     req.flash(
       "notice",
-      `Congratulations, you added a ${account_firstname} classification.`
+      `Congratulations, you added a ${classification_name} classification.`
     )
-    res.status(201).render("invnetory/management/", {
+    let nav = await utilities.getNav()
+    res.status(201).render("inventory/add-classification", {
       title: "Inventory Management",
       nav,
       errors: null,

@@ -2,7 +2,7 @@
 <% if (errors) { %>
   <ul class="notice">
  <% errors.array().forEach(error => { %>
-   <li><%= error.msg %></li>
+   <li>Sorry! <%= error.msg %></li>
 <%  }) %>
  </ul>
 <% } %>
@@ -16,5 +16,12 @@
 <!-- Future functionality to display an error message -->
 <%- messages() %>
 
-<!-- Display main content -->
-<%- item %>
+<div class="center-container">
+  <div class="form-container">
+    <form action="/inv/add-classification" method="post">
+      <label for="classification_name">Classification Name:</label>
+      <input type="text" id="classification_name" name="classification_name" pattern="^[^\s!@#$%^&*]+$" required>
+      <button type="submit">Submit</button>
+    </form>
+  </div>
+</div>'

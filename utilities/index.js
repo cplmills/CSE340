@@ -104,10 +104,10 @@ Util.buildManagementView = async function(){
 /* **************************************
 * Build the Add Classification view HTML
 * *************************************/
-Util.buildAddClassificationView = async function(){
-  let body = '<div class="center-container"><div class="form-container"><form action="/inv/add-classification/" method="post"><label for="classification_name">Classification Name:</label><input type="text" id="classification_name" name="classification_name" pattern="^[^\s!@#$%^&*]+$" required><button type="submit">Submit</button></form></div></div>'
-  return body
-}
+// Util.buildAddClassificationView = async function(){
+//   let body = '<div class="center-container"><div class="form-container"><form action="/inv/add-classification" method="post"><label for="classification_name">Classification Name:</label><input type="text" id="classification_name" name="classification_name" pattern="^[^\s!@#$%^&*]+$" required><button type="submit">Submit</button></form></div></div>'
+//   return body
+// }
 
 /* ****************************************
  * Middleware For Handling Errors
