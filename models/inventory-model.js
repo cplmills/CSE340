@@ -41,4 +41,20 @@ async function getInventoryByInventoryId(invid) {
   }
 }
 
+/* ***************************
+ *  Create a new inventory classification
+ * ************************** */
+async function setInventoryClassification(classification) {
+  try {
+    const data = await pool.query(
+      `INSERT INTO classification (classification_name) VALUES ($1)`,
+      [classification]
+    )
+    console.log(data.rows)
+    return data.rows
+  } catch (error) {
+    console.error("SetInventoryClassification error " + error)
+  }
+}
+
 module.exports = {getClassifications, getInventoryByClassificationId, getInventoryByInventoryId};

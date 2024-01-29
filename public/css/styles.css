@@ -23,6 +23,7 @@ h1 {
   padding: 0;
   padding-left: 1rem;
   margin: 0;
+  margin-bottom: 1rem;
 }
 
 h2 {
@@ -342,7 +343,7 @@ button:hover {
   border: 1px solid var(--sitemain);
 }
 
-.login-box {
+.login-box, .center-container {
   margin: 0;
   padding: 0;
   display: flex;
@@ -359,4 +360,10 @@ button:hover {
 #pswdBtn {
   font-size: 0.8rem;
   padding: 4px;
+}
+
+#single-line {
+  display: block;
+  float: left;
+  clear: both;
 }
