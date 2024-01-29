@@ -1,0 +1,20 @@
+<!-- Check for a heading and display a heading and title if exists -->
+<% if (errors) { %>
+  <ul class="notice">
+ <% errors.array().forEach(error => { %>
+   <li><%= error.msg %></li>
+<%  }) %>
+ </ul>
+<% } %>
+
+<% if (title) { %>
+  <h1><%- title %></h1>
+  <% } else {
+    res.redirect('/')
+  } %>
+
+<!-- Future functionality to display an error message -->
+<%- messages() %>
+
+<!-- Display main content -->
+<%- item %>
