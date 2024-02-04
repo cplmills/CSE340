@@ -30,6 +30,14 @@ h2 {
   font-weight: bold;
 }
 
+input:invalid, textarea:invalid {
+  background-color: rgb(248, 204, 204);
+}
+
+input:valid, textarea:valid {
+  background-color: rgb(202, 250, 202);
+}
+
 #wrapper {
   border: 5px solid var(--sitemain);
   border-radius: 1rem;

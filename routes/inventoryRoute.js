@@ -5,7 +5,6 @@ const router = new express.Router()
 const invController = require("../controllers/invController")
 const invValidate = require('../utilities/inventory-validation')
 
-
 // Route to build inventory by classification view
 router.get("/type/:classificationId", utilities.handleErrors(invController.buildByClassificationId));
 
@@ -13,7 +12,7 @@ router.get("/type/:classificationId", utilities.handleErrors(invController.build
 router.get("/detail/:inventoryId", utilities.handleErrors(invController.buildByInventoryId));
 
 // Route to build managment view
-router.get("/management", utilities.handleErrors(invController.buildManagementView));
+router.get("/", utilities.handleErrors(invController.buildManagementView));
 
 // Route to build new classification view
 router.get("/add-classification", utilities.handleErrors(invController.buildAddClassificationView));
@@ -23,8 +22,20 @@ router.get("/add-classification", utilities.handleErrors(invController.buildAddC
 router.post(
     "/add-classification",
     invValidate.classificationRules(),
-    invValidate.checkRegData,
-    utilities.handleErrors(invController.registerAccount)
+    invValidate.checkData,
+    utilities.handleErrors(invController.registerClassification)
+  )
+
+// Route to build new inventory item view
+router.get("/add-inventory", utilities.handleErrors(invController.buildAddInventoryView));
+
+// Route to register a new inventory item
+// Process the inventory item form data
+router.post(
+    "/add-inventory",
+    invValidate.addInventoryRules(),
+    invValidate.checkInventoryData,
+    utilities.handleErrors(invController.registerInventoryItem)
   )
 
 
