@@ -97,17 +97,33 @@ Util.buildInventoryItem = async function(invitem){
 * Build the Managment view HTML
 * *************************************/
 Util.buildManagementView = async function(){
-  let body = '<div class="center-container"><div class="form-container">Add links here</div></div>'
+  let body = '<div class="center-container">'
+  body += '<div class="form-container">'
+  body += '<a href="/inv/add-classification">Add Classification</a>'
+  body += '<br><a href="/inv/add-inventory">Add Inventory Item</a>'
+  body += '</div>'
+  body += '</div>'
   return body
 }
 
 /* **************************************
-* Build the Add Classification view HTML
+* Build the categories dropdown
 * *************************************/
-// Util.buildAddClassificationView = async function(){
-//   let body = '<div class="center-container"><div class="form-container"><form action="/inv/add-classification" method="post"><label for="classification_name">Classification Name:</label><input type="text" id="classification_name" name="classification_name" pattern="^[^\s!@#$%^&*]+$" required><button type="submit">Submit</button></form></div></div>'
-//   return body
-// }
+Util.populateClassificationDropDown = async function populateClassificationDropDown(activeItem = null) {
+  let classList = await invModel.getClassifications()
+  dropDown = ''
+  classList.rows.forEach(category => {
+    console.log("HERE: " + category.classification_id + " - " + activeItem)
+    if (parseInt(category.classification_id) === parseInt(activeItem)) {
+      console.log("found it!")
+      dropDown += '<option value="' + category.classification_id + '" selected>' + category.classification_name + '</option>'
+    } else {  
+      console.log("didnt find it!")
+      dropDown += '<option value="' + category.classification_id + '">' + category.classification_name + '</option>'
+    }
+  })
+  return dropDown
+}
 
 /* ****************************************
  * Middleware For Handling Errors

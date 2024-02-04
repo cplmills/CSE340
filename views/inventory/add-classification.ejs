@@ -2,7 +2,7 @@
 <% if (errors) { %>
   <ul class="notice">
  <% errors.array().forEach(error => { %>
-   <li>Sorry! <%= error.msg %></li>
+   <li><%= error.msg %></li>
 <%  }) %>
  </ul>
 <% } %>
