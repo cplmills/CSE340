@@ -18,9 +18,7 @@
   <div class="form-container">
     <form action="/inv/add-inventory" method="post">
       <label for="inv_classification">Classification:</label>
-      <select id="classification_id" name="classification_id" required>
         <%- dropDown %>
-      </select>
       <br>
       <label for="inv_make">Make:</label>
       <input type="text" id="inv_make" name="inv_make" value="<%- locals.inv_make %>" required>

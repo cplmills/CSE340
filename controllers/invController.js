@@ -41,16 +41,20 @@ invCont.buildByInventoryId = async function (req, res, next) {
 * ************************** */
 invCont.buildManagementView = async function (req, res, next) {
   const inventoryId = req.params.inventoryId
-  const content = await utilities.buildManagementView()
-    let   nav  = await utilities.getNav()
-    const vehicleName = "Inventory Managment"
-    res.render("./inventory/management", {
-      title: vehicleName,
-      nav,
-      content,
-      errors: null,
-    })
-  }
+  //const content = await utilities.buildManagementView()
+  let   nav  = await utilities.getNav()
+  const vehicleName = "Inventory Managment"
+  // call function to create a select list in inventory management view
+  const classificationSelect = await utilities.buildClassificationList()
+
+  res.render("./inventory/management", {
+    title: vehicleName,
+    nav,
+    //content,
+    classificationSelect,
+    errors: null,
+  })
+}
 
 /* ***************************
 *  Build Add Classification view
@@ -105,7 +109,7 @@ invCont.registerClassification = async function (req, res, next) {
 invCont.buildAddInventoryView = async function (req, res, next) {
   const inventoryId = req.params.inventoryId
     let nav = await utilities.getNav()
-    let cats = await utilities.populateClassificationDropDown()
+    let cats = await utilities.buildClassificationList()
 
     const titleName = "Inventory Managment: New Item"
     res.render("./inventory/add-inventory", {

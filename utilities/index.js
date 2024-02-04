@@ -98,32 +98,34 @@ Util.buildInventoryItem = async function(invitem){
 /* **************************************
 * Build the Managment view HTML
 * *************************************/
-Util.buildManagementView = async function(){
-  let body = '<div class="center-container">'
-  body += '<div class="form-container">'
-  body += '<a href="/inv/add-classification">Add Classification</a>'
-  body += '<br><a href="/inv/add-inventory">Add Inventory Item</a>'
-  body += '</div>'
-  body += '</div>'
-  return body
-}
+// Util.buildManagementView = async function(){
+  // let body = '<div class="center-container">'
+  // body += '<div class="form-container">'
+  // body += '<a href="/inv/add-classification">Add Classification</a>'
+  // body += '<br><a href="/inv/add-inventory">Add Inventory Item</a>'
+  // body += '<h2>Manage Inventory</h2>'
+  // body += '<p>Select a classification from the list below to see items belonging to that classification.</p>'
+  // <%- classificationSelect %>
+  // body += '</div>'
+  // body += '</div>'
+  // return body
+// }
 
 /* **************************************
 * Build the categories dropdown
 * *************************************/
-Util.populateClassificationDropDown = async function populateClassificationDropDown(activeItem = null) {
+Util.buildClassificationList = async function buildClassificationList(activeItem = null) {
   let classList = await invModel.getClassifications()
-  dropDown = ''
+  dropDown = '<select id="classification_id" name="classification_id" required>'
   classList.rows.forEach(category => {
-    console.log("HERE: " + category.classification_id + " - " + activeItem)
     if (parseInt(category.classification_id) === parseInt(activeItem)) {
-      console.log("found it!")
       dropDown += '<option value="' + category.classification_id + '" selected>' + category.classification_name + '</option>'
     } else {  
       console.log("didnt find it!")
       dropDown += '<option value="' + category.classification_id + '">' + category.classification_name + '</option>'
     }
   })
+  dropDown += '</select>'
   return dropDown
 }
 

@@ -87,7 +87,7 @@ validate.addInventoryRules = () => {
   errors = validationResult(req)
   if (!errors.isEmpty()) {
     let nav = await utilities.getNav()
-    let cats = await utilities.populateClassificationDropDown(classification_id)
+    let cats = await utilities.buildClassificationList(classification_id)
 
     res.render("inventory/add-inventory", {
       errors,
