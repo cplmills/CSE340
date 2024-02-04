@@ -1,6 +1,8 @@
 const utilities = require('../utilities');
 const accountModel = require('../models/account-model')
 const bcrypt = require("bcryptjs")
+const jwt = require("jsonwebtoken")
+require("dotenv").config()
 
 /* ****************************************
 *  Deliver login view
@@ -14,6 +16,18 @@ async function buildLogin(req, res, next) {
     })
   }
   
+/* ****************************************
+*  Deliver management view
+* *************************************** */
+async function buildManagementView(req, res, next) {
+  let nav = await utilities.getNav()
+  res.render("account/management", {
+    title: "Account Management",
+    nav,
+    errors: null,
+  })
+}
+
 /* ****************************************
 *  Process Login
 * *************************************** */
@@ -60,16 +74,17 @@ async function accountLogin(req, res) {
     errors: null,
     account_email,
    })
-  return
+   return
   }
   try {
-   if (await bcrypt.compare(account_password, accountData.account_password)) {
-   delete accountData.account_password
-   const accessToken = jwt.sign(accountData, process.env.ACCESS_TOKEN_SECRET, { expiresIn: 3600 * 1000 })
-   res.cookie("jwt", accessToken, { httpOnly: true, maxAge: 3600 * 1000 })
+    if (await bcrypt.compare(account_password, accountData.account_password)) {
+      delete accountData.account_password
+      const accessToken = jwt.sign(accountData, process.env.ACCESS_TOKEN_SECRET, { expiresIn: 3600 * 1000 })
+      res.cookie("jwt", accessToken, { httpOnly: true, maxAge: 3600 * 1000 })
    return res.redirect("/account/")
    }
   } catch (error) {
+    console.error(error)
    return new Error('Access Forbidden')
   }
  }
@@ -138,4 +153,4 @@ async function registerAccount(req, res) {
   }
 
 
-  module.exports = { buildLogin, buildRegistration, registerAccount }
+  module.exports = { buildLogin, buildRegistration, registerAccount, buildManagementView, accountLogin }
