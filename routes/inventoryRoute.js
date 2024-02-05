@@ -11,9 +11,6 @@ router.get("/type/:classificationId", utilities.handleErrors(invController.build
 // Route to build inventory by inventory id view
 router.get("/detail/:inventoryId", utilities.handleErrors(invController.buildByInventoryId));
 
-// Route to modify inventory
-router.get("/edit/:inventory_id", utilities.handleErrors(invController.editInventoryItem))
-
 // Route to build managment view
 router.get("/", utilities.handleErrors(invController.buildManagementView));
 
@@ -44,5 +41,7 @@ router.post(
     utilities.handleErrors(invController.registerInventoryItem)
   )
 
+// Route to modify inventory
+router.get("/edit/:inventory_id", utilities.handleErrors(invController.buildEditInventoryView))
 
 module.exports = router;
