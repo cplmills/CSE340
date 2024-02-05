@@ -381,6 +381,13 @@ input {
   box-sizing: border-box;
 }
 
+textarea {
+  width: 100%;
+  min-width: 300px;
+  font-size: 1rem;
+  
+}
+
 button {
   background-color: var(--sitemain);
   color: #fff;
