@@ -117,6 +117,7 @@ Util.buildInventoryItem = async function(invitem){
 Util.buildClassificationList = async function buildClassificationList(activeItem = null) {
   let classList = await invModel.getClassifications()
   dropDown = '<select id="classification_id" name="classification_id" required>'
+  dropDown += '<option value="0" disabled>Select a classification...</option>'
   classList.rows.forEach(category => {
     if (parseInt(category.classification_id) === parseInt(activeItem)) {
       dropDown += '<option value="' + category.classification_id + '" selected>' + category.classification_name + '</option>'
