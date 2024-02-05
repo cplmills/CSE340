@@ -47,6 +47,10 @@
       <input type="text" id="inv_color" name="inv_color" placeholder="Silver" pattern="^[a-zA-Z\s]+$" value="<%- locals.inv_color %>" required >
       <br>
       <button type="submit">Update Vehicle</button>
+      <input type="hidden" name="inv_id"
+      <% if(locals.inv_id) { %> value="<%= locals.inv_id %>"
+      <% } %>>
+
     </form>
   </div>
 </div>
