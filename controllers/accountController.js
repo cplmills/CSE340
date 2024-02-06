@@ -77,24 +77,30 @@ async function accountLogin(req, res) {
    return
   }
   try {
-    console.log('checking password')
-    if (await bcrypt.compare(account_password, accountData.account_password)) {
+    console.log(`checking password: ${account_password} - ${accountData.account_password}`)
+    const passme = await bcrypt.compare(account_password, accountData.account_password)
+    console.log(`passme: ${passme}`)
+    if (passme) {
       delete accountData.account_password
       console.log('creating token')
       const accessToken = jwt.sign(accountData, process.env.ACCESS_TOKEN_SECRET, { expiresIn: 3600 * 1000 })
       res.cookie("jwt", accessToken, { httpOnly: true, maxAge: 3600 * 1000 })
-   return res.redirect("/account/")
-   }
+      return res.redirect("/account/")
+    } else {
+      req.flash("notice", "Please check your credentials and try again.")
+      res.status(400).render("account/login", {
+       title: "Login",
+       nav,
+       errors: null,
+       account_email,
+      })    }
   } catch (error) {
     console.error(error)
-   return new Error('Access Forbidden')
+    return new Error('Access Forbidden')
   }
  }
 
-
-
-
-  /* ****************************************
+/* ****************************************
 *  Deliver registration view
 * *************************************** */
 async function buildRegistration(req, res, next) {
