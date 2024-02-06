@@ -1,5 +1,7 @@
 const invModel = require("../models/inventory-model")
 const Util = {}
+const jwt = require("jsonwebtoken")
+require("dotenv").config()
 
 /* ************************
  * Constructs the nav HTML unordered list
@@ -96,32 +98,35 @@ Util.buildInventoryItem = async function(invitem){
 /* **************************************
 * Build the Managment view HTML
 * *************************************/
-Util.buildManagementView = async function(){
-  let body = '<div class="center-container">'
-  body += '<div class="form-container">'
-  body += '<a href="/inv/add-classification">Add Classification</a>'
-  body += '<br><a href="/inv/add-inventory">Add Inventory Item</a>'
-  body += '</div>'
-  body += '</div>'
-  return body
-}
+// Util.buildManagementView = async function(){
+  // let body = '<div class="center-container">'
+  // body += '<div class="form-container">'
+  // body += '<a href="/inv/add-classification">Add Classification</a>'
+  // body += '<br><a href="/inv/add-inventory">Add Inventory Item</a>'
+  // body += '<h2>Manage Inventory</h2>'
+  // body += '<p>Select a classification from the list below to see items belonging to that classification.</p>'
+  // <%- classificationSelect %>
+  // body += '</div>'
+  // body += '</div>'
+  // return body
+// }
 
 /* **************************************
 * Build the categories dropdown
 * *************************************/
-Util.populateClassificationDropDown = async function populateClassificationDropDown(activeItem = null) {
+Util.buildClassificationList = async function buildClassificationList(activeItem = null) {
   let classList = await invModel.getClassifications()
-  dropDown = ''
+  dropDown = '<select id="classification_id" name="classification_id" required>'
+  dropDown += '<option value="0" disabled>Select a classification...</option>'
   classList.rows.forEach(category => {
-    console.log("HERE: " + category.classification_id + " - " + activeItem)
     if (parseInt(category.classification_id) === parseInt(activeItem)) {
-      console.log("found it!")
       dropDown += '<option value="' + category.classification_id + '" selected>' + category.classification_name + '</option>'
     } else {  
       console.log("didnt find it!")
       dropDown += '<option value="' + category.classification_id + '">' + category.classification_name + '</option>'
     }
   })
+  dropDown += '</select>'
   return dropDown
 }
 
@@ -131,5 +136,41 @@ Util.populateClassificationDropDown = async function populateClassificationDropD
  * General Error Handling
  **************************************** */
 Util.handleErrors = fn => (req, res, next) => Promise.resolve(fn(req, res, next)).catch(next)
+
+
+/* ****************************************
+* Middleware to check token validity
+**************************************** */
+Util.checkJWTToken = (req, res, next) => {
+  if (req.cookies.jwt) {
+   jwt.verify(
+    req.cookies.jwt,
+    process.env.ACCESS_TOKEN_SECRET,
+    function (err, accountData) {
+     if (err) {
+      req.flash("Please log in")
+      res.clearCookie("jwt")
+      return res.redirect("/account/login")
+     }
+     res.locals.accountData = accountData
+     res.locals.loggedin = 1
+     next()
+    })
+  } else {
+   next()
+  }
+ }
+
+/* ****************************************
+ *  Check Login
+ * ************************************ */
+Util.checkLogin = (req, res, next) => {
+  if (res.locals.loggedin) {
+    next()
+  } else {
+    req.flash("notice", "Please log in.")
+    return res.redirect("/account/login")
+  }
+ }
 
 module.exports = Util

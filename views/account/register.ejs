@@ -24,7 +24,7 @@
   
         <label for="account_password">Password:</label>
         <input type="password" id="account_password" name="account_password" pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$" title="Passwords must be a minimum of 12 characters and include 1 capital letter, 1 number, and 1 special character" required>
-        <button id="pswdBtn">Show Password</button>
+        <button id="pswdBtn" onclick="showPassword()" type="button">Show Password</button>
         <div class="password-info button">Passwords must be a minimum of 12 characters and include 1 capital letter, 1 number, and 1 special character</div>
   
       </fieldset>
@@ -35,8 +35,9 @@
   </div>
 
 <script>
+  function showPassword() {
     const pswdBtn = document.querySelector("#pswdBtn");
-    pswdBtn.addEventListener("click", function() {
+    //pswdBtn.addEventListener("click", function() {
     const pswdInput = document.getElementById("account_password");
     const type = pswdInput.getAttribute("type");
     if (type == "password") {
@@ -46,5 +47,6 @@
         pswdInput.setAttribute("type", "password");
         pswdBtn.innerHTML = "Show Password";
     }
-    });
+    //});
+  }
 </script>

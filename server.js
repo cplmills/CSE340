@@ -13,14 +13,18 @@ const static = require("./routes/static")
 const expressLayouts = require("express-ejs-layouts")
 const inventoryRoute = require("./routes/inventoryRoute")
 const accountRoute = require("./routes/accountRoute")
-const utilities = require("./utilities")
+const utilities = require("./utilities/")
 const session = require("express-session")
 const pool = require('./database/')
 const bodyParser = require('body-parser')
+const cookieParser = require('cookie-parser')
+const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
 
 /* ***********************
  * Middleware
  * ************************/
+
 app.use(session({
   store: new (require('connect-pg-simple')(session))({
     createTableIfMissing: true,
@@ -32,6 +36,8 @@ app.use(session({
   name: 'sessionId',
 }))
 
+
+
 // Express Messages Middleware
 app.use(require('connect-flash')())
 app.use(function(req, res, next){
@@ -41,7 +47,10 @@ app.use(function(req, res, next){
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true })) //for parsing an application/x-www-form-urlencoded
+app.use(cookieParser())
 
+// check JSON web token middleware 
+app.use(utilities.checkJWTToken)
 /* ***********************
  * View Engine and Templates
  *************************/

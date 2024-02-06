@@ -50,6 +50,41 @@ select {
   font-size: 1rem;
 }
 
+button:disabled, button:disabled:hover {
+  color: white;
+  background-color: grey;
+  cursor: not-allowed;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  border: 1px solid #fff; /* White border around the table */
+  margin-top: 1rem;
+}
+
+/* Style for alternating row colors */
+table tr:nth-child(odd) {
+  background-color: #f9f9f9; /* Lighter shade */
+}
+
+table tr:nth-child(even) {
+  background-color: #e5e5e5; /* Darker shade */
+}
+
+/* Style for table header */
+table th {
+  background-color: #333; /* Darker color for the header */
+  color: #fff; /* Text color for the header */
+  padding: 10px;
+}
+
+/* Style for table cells */
+table td {
+  border: 1px solid #fff; /* White border around each cell */
+  padding: 8px;
+}
+
 #wrapper {
   border: 5px solid var(--sitemain);
   border-radius: 1rem;
@@ -330,7 +365,8 @@ footer {
   padding: 20px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
-  width: 300px;
+  width: 80%;
+  min-width: 300px;
 }
 
 label {
@@ -343,6 +379,13 @@ input {
   padding: 8px;
   margin-bottom: 16px;
   box-sizing: border-box;
+}
+
+textarea {
+  width: 100%;
+  min-width: 300px;
+  font-size: 1rem;
+  
 }
 
 button {

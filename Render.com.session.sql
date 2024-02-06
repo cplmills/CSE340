@@ -1,1 +1,1 @@
-select * from account
+update account set account_type = 'Employee' where account_id = 9

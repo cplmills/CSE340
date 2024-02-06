@@ -17,6 +17,9 @@ router.get("/", utilities.handleErrors(invController.buildManagementView));
 // Route to build new classification view
 router.get("/add-classification", utilities.handleErrors(invController.buildAddClassificationView));
 
+// Route to build new something something
+router.get("/getInventory/:classification_id", utilities.handleErrors(invController.getInventoryJSON))
+
 // Route to register a new classification
 // Process the classification form data
 router.post(
@@ -38,5 +41,13 @@ router.post(
     utilities.handleErrors(invController.registerInventoryItem)
   )
 
+// Route to modify inventory
+router.get("/edit/:inventory_id", utilities.handleErrors(invController.buildEditInventoryView))
+
+// Route to update inventory
+router.post("/update/", 
+invValidate.newInventoryRules(),
+invValidate.checkUpdateData,
+utilities.handleErrors(invController.updateInventory))
 
 module.exports = router;

@@ -6,7 +6,7 @@
       <input type="email" id="account_email" name="account_email" required>
   
       <label for="account_password">Password:</label>
-      <input type="password" id="account_password" name="account_password" title="Passwords must be a minimum of 12 characters and include 1 capital letter, 1 number, and 1 special character" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{12}$" required>
+      <input type="password" id="account_password" name="account_password" title="Passwords must be a minimum of 12 characters and include 1 capital letter, 1 number, and 1 special character" pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$" required>
       <div class="password-info button">Passwords must be a minimum of 12 characters and include 1 capital letter, 1 number, and 1 special character</div>
       <button type="submit">Submit</button>
     </form>
