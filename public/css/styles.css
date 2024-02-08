@@ -143,10 +143,14 @@ nav ul li:hover a {
 }
 
 #tools {
-  display: block;
+  display: flex;
   float: right;
   padding: 1rem;
   font-size: 1.2rem;
+}
+
+#tools > div {
+  margin-left: 1.5rem;
 }
 
 #banner {

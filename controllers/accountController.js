@@ -21,43 +21,15 @@ async function buildLogin(req, res, next) {
 * *************************************** */
 async function buildManagementView(req, res, next) {
   let nav = await utilities.getNav()
+  let accountdata = res.locals.accountData.account_type
+
   res.render("account/management", {
     title: "Account Management",
     nav,
+    accountdata,
     errors: null,
   })
 }
-
-/* ****************************************
-*  Process Login
-* *************************************** */
-// async function processLogin(req, res) {
-//     let nav = await utilities.getNav()
-//     const { account_email, account_password } = req.body
-  
-//     const regResult = await accountModel.processLogin(
-//       account_email,
-//       account_password
-//     )
-//     if (regResult) {
-//       req.flash(
-//         "notice",
-//         `Congratulations, ${account_firstname}. Login Successful.`
-//       )
-//       res.status(201).render(".", {
-//         title: "Logged In",
-//         nav,
-//         errors: null,
-//       })
-//     } else {
-//       req.flash("notice", "Sorry, the login failed.")
-//       res.status(501).render("account/login", {
-//         title: "Login Here",
-//         nav,
-//         errors: null,
-//       })
-//     }
-//   }
 
 /* ****************************************
  *  Process login request

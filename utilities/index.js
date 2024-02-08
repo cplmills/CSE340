@@ -96,22 +96,6 @@ Util.buildInventoryItem = async function(invitem){
 }
 
 /* **************************************
-* Build the Managment view HTML
-* *************************************/
-// Util.buildManagementView = async function(){
-  // let body = '<div class="center-container">'
-  // body += '<div class="form-container">'
-  // body += '<a href="/inv/add-classification">Add Classification</a>'
-  // body += '<br><a href="/inv/add-inventory">Add Inventory Item</a>'
-  // body += '<h2>Manage Inventory</h2>'
-  // body += '<p>Select a classification from the list below to see items belonging to that classification.</p>'
-  // <%- classificationSelect %>
-  // body += '</div>'
-  // body += '</div>'
-  // return body
-// }
-
-/* **************************************
 * Build the categories dropdown
 * *************************************/
 Util.buildClassificationList = async function buildClassificationList(activeItem = null, disabled = false) {
@@ -148,6 +132,7 @@ Util.handleErrors = fn => (req, res, next) => Promise.resolve(fn(req, res, next)
 * Middleware to check token validity
 **************************************** */
 Util.checkJWTToken = (req, res, next) => {
+  try {
   if (req.cookies.jwt) {
    jwt.verify(
     req.cookies.jwt,
@@ -165,13 +150,17 @@ Util.checkJWTToken = (req, res, next) => {
   } else {
    next()
   }
+} catch (err){
+  console.error('Whoops a daisy!', err.message)
+}
  }
 
 /* ****************************************
  *  Check Login
  * ************************************ */
-Util.checkLogin = (req, res, next) => {
-  if (res.locals.loggedin) {
+Util.checkLogin = (req, res, next, options) => {
+  console.log(`logged in as ${res.locals.accountData.account_type} - needs ${options}` )
+  if (res.locals.loggedin && options.includes(res.locals.accountData.account_type.toLowerCase())) { 
     next()
   } else {
     req.flash("notice", "Please log in.")

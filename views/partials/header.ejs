@@ -3,6 +3,15 @@
       <a href="/" title="Return to home page">CSE Motors</a>
     </span>
     <div id="tools">
-      <a title="Click to log in" href="/account/login">My Account</a>
+      <% if (isAuthenticated) { %>
+        <div>
+          <a title="Click to log in" href="/account/login">My Account</a>
+        </div>
+        <div>
+          <a title="Welcome Basic" href="/account/">Welcome Basic</a>
+        </div>
+      <% } %>
+  
+      <p></p>
     </div>
 </header>
