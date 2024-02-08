@@ -159,12 +159,14 @@ Util.checkJWTToken = (req, res, next) => {
  *  Check Login
  * ************************************ */
 Util.checkLogin = (req, res, next, options) => {
-  console.log(`logged in as ${res.locals.accountData.account_type} - needs ${options}` )
-  if (res.locals.loggedin && options.includes(res.locals.accountData.account_type.toLowerCase())) { 
-    next()
-  } else {
+  try {
+    console.log(`logged in as ${res.locals.accountData.account_type} - needs ${options}` )
+    if (res.locals.loggedin && options.includes(res.locals.accountData.account_type.toLowerCase())) { 
+      next()
+    }
+  } catch {
     req.flash("notice", "Please log in.")
-    return res.redirect("/account/login")
+    return res.redirect("/account/login")  
   }
  }
 
