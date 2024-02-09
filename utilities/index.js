@@ -163,9 +163,12 @@ Util.checkLogin = (req, res, next, options) => {
     console.log(`logged in as ${res.locals.accountData.account_type} - needs ${options}` )
     if (res.locals.loggedin && options.includes(res.locals.accountData.account_type.toLowerCase())) { 
       next()
+    } else {
+      req.flash("notice", "Secure Area: Please log in.")
+    return res.redirect("/account/login")
     }
   } catch {
-    req.flash("notice", "Please log in.")
+    req.flash("notice", "Secure Area: Please log in.")
     return res.redirect("/account/login")  
   }
  }

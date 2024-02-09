@@ -22,9 +22,15 @@ async function buildLogin(req, res, next) {
 async function buildManagementView(req, res, next) {
   let nav = await utilities.getNav()
   let accountdata = res.locals.accountData.account_type
-
+  let headingCode = ''
+  let loggedInAs = res.locals.accountData.account_type.toLowerCase()
+  if (loggedInAs === "client"){
+    headingCode = `<h2>Welcome ${res.locals.accountData.account_firstname}</h2>`
+  } else if (loggedInAs === "admin" || loggedInAs === "employee"){
+    headingCode = `<h2>Welcome ${res.locals.accountData.account_firstname}</h2><h3>Inventory Management</h3><p id="inv_management"><a title="Inventory Management" href="/inv/management">Inventory Management</a></p>`
+  }
   res.render("account/management", {
-    title: "Account Management",
+    title: headingCode,
     nav,
     accountdata,
     errors: null,
