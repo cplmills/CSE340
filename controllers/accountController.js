@@ -3,6 +3,8 @@ const accountModel = require('../models/account-model')
 const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
 require("dotenv").config()
+const regValidate = require('../utilities/account-validation')
+
 
 /* ****************************************
 *  Deliver login view
@@ -21,18 +23,24 @@ async function buildLogin(req, res, next) {
 * *************************************** */
 async function buildManagementView(req, res, next) {
   let nav = await utilities.getNav()
-  let accountdata = res.locals.accountData.account_type
+  let accountData = res.locals.accountData
   let headingCode = ''
-  let loggedInAs = res.locals.accountData.account_type.toLowerCase()
+  let updateLink = ''
+  updateLink += `<a title="Update Account Information" href="/account/update/${accountData.account_id}">Update Account Information</a>`
+  let loggedInAs = accountData.account_type.toLowerCase()
   if (loggedInAs === "client"){
     headingCode = `<h2>Welcome ${res.locals.accountData.account_firstname}</h2>`
   } else if (loggedInAs === "admin" || loggedInAs === "employee"){
-    headingCode = `<h2>Welcome ${res.locals.accountData.account_firstname}</h2><h3>Inventory Management</h3><p id="inv_management"><a title="Inventory Management" href="/inv/management">Inventory Management</a></p>`
+    headingCode = `<h2>Welcome ${accountData.account_firstname}</h2>`
+    updateLink += `<h2>Inventory Management</h2>`
+    updateLink += `<a title="Manage Inventory" href="/inv/">Manage Inventory</a>`
   }
+  
   res.render("account/management", {
-    title: headingCode,
+    title: "Account Management",
+    subTitle: headingCode,
     nav,
-    accountdata,
+    updateLink,
     errors: null,
   })
 }
@@ -138,5 +146,89 @@ async function registerAccount(req, res) {
     }
   }
 
+/* ****************************************
+*  Deliver update view
+* *************************************** */
+async function buildUpdateAccount(req, res, next) {
+  let nav = await utilities.getNav()
+  let accountdata = await accountModel.getAccountByEmail(res.locals.accountData.account_email)
+  let account_id = accountdata.account_id
 
-  module.exports = { buildLogin, buildRegistration, registerAccount, buildManagementView, accountLogin }
+  res.render("account/update", {
+    title: "Update Account",
+    nav,
+    accountdata,
+    account_id,
+    errors: null,
+  })
+}
+
+/* ****************************************
+*  Process Account Update
+* *************************************** */
+async function updateAccount(req, res) {
+  let nav = await utilities.getNav()
+  let accountdata = await accountModel.getAccountByEmail(res.locals.accountData.account_email)
+
+  const { account_id, account_firstname, account_lastname, account_email } = req.body
+  if (req.body.account_lastname) {
+    console.log("Information Form Submitted")
+    regValidate.updateRules()
+    regValidate.checkUpdateData
+    const regResult = await accountModel.updateAccount(
+      account_id,
+      account_firstname,
+      account_lastname,
+      account_email,
+    )
+    if (regResult) {
+      req.flash(
+        "notice",
+        `Information Successfully Updated`
+      )
+      res.status(201).redirect("/account/")
+    } else {
+      req.flash("notice", 'Sorry, there was an error processing the update.')
+      res.status(500).render(`account/update/`, {
+          title: "Registration",
+          nav,
+          accountdata,
+          errors: null,
+      })
+    }
+  }
+  if (req.body.account_password) {
+    console.log("Password Form Submitted")
+    // Hash the password before storing
+    let hashedPassword
+    try {
+      // regular password and cost (salt is generated automatically)
+      hashedPassword = await bcrypt.hashSync(req.body.account_password, 10)
+      console.error(`HP: ${hashedPassword} - AP: ${account_password}`)
+    } catch (e) {
+      console.error(e)
+    }
+      regResult = await accountModel.changePassword(hashedPassword, account_id)
+      if (regResult) {
+        req.flash(
+          "notice",
+          `Information Successfully Updated`
+        )
+        res.status(201).redirect("/account/")
+      } else {
+        req.flash("notice", 'Sorry, there was an error processing the password update 1.')
+        res.status(500).render(`account/update/`, {
+            title: "Registration",
+            nav,
+            accountdata,
+            errors: null,
+        })
+      }
+    res.status(201).redirect("/account/")
+
+  }
+
+}
+
+
+  module.exports = { buildLogin, buildRegistration, registerAccount, buildManagementView, accountLogin, buildUpdateAccount, updateAccount }
