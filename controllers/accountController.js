@@ -193,12 +193,14 @@ async function updateAccount(req, res) {
           "notice",
           `Information Successfully Updated`
         )
-        res.status(201).render(`account/`, {
-          title: "Update Account Succeeded",
-          nav,
-          accountdata: res.locals.accountData,
-          errors: null,
-      })
+        res.status(201).redirect("/account/")
+
+      //   res.status(201).render(`account/`, {
+      //     title: "Update Account Succeeded",
+      //     nav,
+      //     accountdata: res.locals.accountData,
+      //     errors: null,
+      // })
       } else {
         req.flash("notice", 'Sorry, there was an error processing the update.')
         res.status(500).render(`account/`, {
