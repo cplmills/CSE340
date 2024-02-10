@@ -1,0 +1,63 @@
+<%- messages() %>
+<% if (errors) { %>
+  <ul class="notice">
+ <% errors.array().forEach(error => { %>
+   <li><%= error.msg %></li>
+<%  }) %>
+ </ul>
+<% } 
+
+%>
+<h1><%- title %></h1>
+
+<div class="login-box">
+<div class="form-container">
+    <form action="/account/update/" method="post" name="info_form">
+      <input type="hidden" name="account_id" value="<%-accountdata.account_id%>">
+      <fieldset>
+        <legend>Account Update</legend>
+        <span class="password-info">All Fields are Required</span>
+        <label for="account_firstname">First Name:</label>
+        <input type="text" id="account_firstname" name="account_firstname" value="<%- accountdata.account_firstname %>" required>
+  
+        <label for="account_lastname">Last Name:</label>
+        <input type="text" id="account_lastname" name="account_lastname"  value="<%- accountdata.account_lastname %>" required>
+  
+        <label for="account_email">Email Address:</label>
+        <input type="email" id="account_email" name="account_email"  value="<%- accountdata.account_email %>" required>
+      </fieldset>
+      <button type="submit">Update Info</button>
+    </form>
+
+    <form action="/account/updatepassword/" method="post" name="password_form">
+      <fieldset>
+        <input type="hidden" name="account_id" value="<%-accountdata.account_id%>">
+        <legend>Change Password</legend>
+          <span class="password-info">All Fields are Required</span>
+          <label for="account_password">Change Password:</label>
+          <input type="password" id="account_password" name="account_password" pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$" title="Passwords must be a minimum of 12 characters and include 1 capital letter, 1 number, and 1 special character" required>
+          <button id="pswdBtn" onclick="showPassword()" type="button">Show Password</button>
+          <div class="password-info button">This will change your login password for CSE Motors! Passwords must be a minimum of 12 characters and include 1 capital letter, 1 number, and 1 special character</div>
+      </fieldset>
+  
+      <button type="submit">Change Password</button>
+    </form>
+  </div>
+  </div>
+
+<script>
+  function showPassword() {
+    const pswdBtn = document.querySelector("#pswdBtn");
+    //pswdBtn.addEventListener("click", function() {
+    const pswdInput = document.getElementById("account_password");
+    const type = pswdInput.getAttribute("type");
+    if (type == "password") {
+        pswdInput.setAttribute("type", "text");
+        pswdBtn.innerHTML = "Hide Password";
+    } else {
+        pswdInput.setAttribute("type", "password");
+        pswdBtn.innerHTML = "Show Password";
+    }
+    //});
+  }
+</script>

@@ -96,27 +96,17 @@ Util.buildInventoryItem = async function(invitem){
 }
 
 /* **************************************
-* Build the Managment view HTML
-* *************************************/
-// Util.buildManagementView = async function(){
-  // let body = '<div class="center-container">'
-  // body += '<div class="form-container">'
-  // body += '<a href="/inv/add-classification">Add Classification</a>'
-  // body += '<br><a href="/inv/add-inventory">Add Inventory Item</a>'
-  // body += '<h2>Manage Inventory</h2>'
-  // body += '<p>Select a classification from the list below to see items belonging to that classification.</p>'
-  // <%- classificationSelect %>
-  // body += '</div>'
-  // body += '</div>'
-  // return body
-// }
-
-/* **************************************
 * Build the categories dropdown
 * *************************************/
-Util.buildClassificationList = async function buildClassificationList(activeItem = null) {
+Util.buildClassificationList = async function buildClassificationList(activeItem = null, disabled = false) {
   let classList = await invModel.getClassifications()
-  dropDown = '<select id="classification_id" name="classification_id" required>'
+  if (disabled) {
+    disabled = ' disabled'
+  } else {
+    disabled = ''
+  }
+  
+  dropDown = '<select id="classification_id" name="classification_id" required' + disabled + '>'
   dropDown += '<option value="0" disabled>Select a classification...</option>'
   classList.rows.forEach(category => {
     if (parseInt(category.classification_id) === parseInt(activeItem)) {
@@ -142,6 +132,7 @@ Util.handleErrors = fn => (req, res, next) => Promise.resolve(fn(req, res, next)
 * Middleware to check token validity
 **************************************** */
 Util.checkJWTToken = (req, res, next) => {
+  try {
   if (req.cookies.jwt) {
    jwt.verify(
     req.cookies.jwt,
@@ -159,18 +150,38 @@ Util.checkJWTToken = (req, res, next) => {
   } else {
    next()
   }
+} catch (err){
+  console.error('Whoops a daisy!', err.message)
+}
  }
 
 /* ****************************************
  *  Check Login
  * ************************************ */
-Util.checkLogin = (req, res, next) => {
-  if (res.locals.loggedin) {
-    next()
-  } else {
-    req.flash("notice", "Please log in.")
+Util.checkLogin = (req, res, next, options) => {
+  try {
+    console.log(`logged in as ${res.locals.accountData.account_type} - needs ${options}` )
+    if (res.locals.loggedin && options.includes(res.locals.accountData.account_type.toLowerCase())) { 
+      next()
+    } else {
+      req.flash("notice", "Secure Area: Please log in.")
     return res.redirect("/account/login")
+    }
+  } catch {
+    req.flash("notice", "Secure Area: Please log in.")
+    return res.redirect("/account/login")  
   }
  }
 
+/* ****************************************
+ *  Process Logout
+ * ************************************ */
+Util.logout = (req, res, next, options) => {
+  try {
+
+  } catch (err) {
+    flash("error", err.message)
+    res.redirect("/account")
+  }
+}
 module.exports = Util

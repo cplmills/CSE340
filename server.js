@@ -18,13 +18,10 @@ const session = require("express-session")
 const pool = require('./database/')
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
-const bcrypt = require('bcrypt')
-const jwt = require('jsonwebtoken')
 
 /* ***********************
  * Middleware
  * ************************/
-
 app.use(session({
   store: new (require('connect-pg-simple')(session))({
     createTableIfMissing: true,
@@ -35,8 +32,6 @@ app.use(session({
   saveUninitialized: true,
   name: 'sessionId',
 }))
-
-
 
 // Express Messages Middleware
 app.use(require('connect-flash')())
@@ -51,13 +46,22 @@ app.use(cookieParser())
 
 // check JSON web token middleware 
 app.use(utilities.checkJWTToken)
+
+// Middleware to check for JWT cookie
+app.use((req, res, next) => {
+  const jwtCookie = req.cookies.jwt;
+  res.locals.isAuthenticated = !!jwtCookie; // Set a local variable based on the presence of the JWT cookie
+  next();
+});
+
+
+
 /* ***********************
  * View Engine and Templates
  *************************/
 app.set("view engine", "ejs")
 app.use(expressLayouts)
 app.set("layout", "./layouts/layout") // not at views root
-
 
 /* ***********************
  * Routes

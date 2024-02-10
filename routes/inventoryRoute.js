@@ -12,25 +12,26 @@ router.get("/type/:classificationId", utilities.handleErrors(invController.build
 router.get("/detail/:inventoryId", utilities.handleErrors(invController.buildByInventoryId));
 
 // Route to build managment view
-router.get("/", utilities.handleErrors(invController.buildManagementView));
+router.get("/", (req, res, next) => utilities.checkLogin(req, res, next, ['admin', 'employee']), utilities.handleErrors(invController.buildManagementView));
 
 // Route to build new classification view
-router.get("/add-classification", utilities.handleErrors(invController.buildAddClassificationView));
+router.get("/add-classification", (req, res, next) => utilities.checkLogin(req, res, next, ['admin', 'employee']), utilities.handleErrors(invController.buildAddClassificationView));
 
-// Route to build new something something
+// Route to build new route to return an inventory as JSON
 router.get("/getInventory/:classification_id", utilities.handleErrors(invController.getInventoryJSON))
 
 // Route to register a new classification
 // Process the classification form data
 router.post(
     "/add-classification",
+    (req, res, next) => utilities.checkLogin(req, res, next, ['admin', 'employee']),
     invValidate.classificationRules(),
     invValidate.checkData,
     utilities.handleErrors(invController.registerClassification)
   )
 
 // Route to build new inventory item view
-router.get("/add-inventory", utilities.handleErrors(invController.buildAddInventoryView));
+router.get("/add-inventory", (req, res, next) => utilities.checkLogin(req, res, next, ['admin', 'employee']), utilities.handleErrors(invController.buildAddInventoryView));
 
 // Route to register a new inventory item
 // Process the inventory item form data
@@ -42,12 +43,23 @@ router.post(
   )
 
 // Route to modify inventory
-router.get("/edit/:inventory_id", utilities.handleErrors(invController.buildEditInventoryView))
+router.get("/edit/:inventory_id", (req, res, next) => utilities.checkLogin(req, res, next, ['admin', 'employee']), utilities.handleErrors(invController.buildEditInventoryView))
 
 // Route to update inventory
 router.post("/update/", 
+(req, res, next) => utilities.checkLogin(req, res, next, ['admin', 'employee']),
 invValidate.newInventoryRules(),
 invValidate.checkUpdateData,
 utilities.handleErrors(invController.updateInventory))
+
+// Route to update inventory
+router.get("/delete/:inventory_id", 
+(req, res, next) => utilities.checkLogin(req, res, next, ['admin', 'employee']),
+utilities.handleErrors(invController.buildDeleteInventoryView))
+
+// Route to update inventory
+router.post("/delete/",
+(req, res, next) => utilities.checkLogin(req, res, next, ['admin', 'employee']),
+utilities.handleErrors(invController.deleteInventory))
 
 module.exports = router;
