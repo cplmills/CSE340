@@ -174,12 +174,13 @@ async function updateAccount(req, res) {
       console.error("Account exists already")
       res.locals.accountData.account_email = account_email
       req.flash("notice", 'Sorry, that email address is already in use.')
-      res.status(500).render(`account/update`, {
-          title: "Registration",
-          nav,
-          accountdata: res.locals.accountData,
-          errors: null,
-      })
+      res.redirect("/account")
+      // res.status(500).render(`account/update`, {
+      //     title: "Registration",
+      //     nav,
+      //     accountdata: res.locals.accountData,
+      //     errors: null,
+      // })
     // if email field has changed and new email is not in use
     } else {
       const regResult = await accountModel.updateAccount(
@@ -193,7 +194,7 @@ async function updateAccount(req, res) {
           "notice",
           `Information Successfully Updated`
         )
-        res.status(201).redirect("/account/")
+        res.redirect("/account/")
 
       //   res.status(201).render(`account/`, {
       //     title: "Update Account Succeeded",
