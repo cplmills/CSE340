@@ -19,14 +19,17 @@ body {
   color: var(--sitemain);
 }
 
+main {
+  padding-left: 1rem;
+}
+
 h1 {
   padding: 0;
-  padding-left: 1rem;
   margin: 0;
   margin-bottom: 1rem;
 }
 
-h2 {
+h2, h3 {
   font-weight: bold;
 }
 
@@ -421,7 +424,7 @@ button:hover {
 .password-info {
   margin-top: 8px;
   font-size: 12px;
-  color: #777;
+  color: #222121;
 }
 
 #pswdBtn {

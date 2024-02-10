@@ -26,22 +26,38 @@ router.get("/register", utilities.handleErrors(accountController.buildRegistrati
 // Route to register a new account
 // Process the registration data
 router.post(
-    "/register",
-    regValidate.registationRules(),
-    regValidate.checkRegData,
-    utilities.handleErrors(accountController.registerAccount)
-  )
+  "/register",
+  regValidate.registrationRules(),
+  regValidate.checkRegData,
+  utilities.handleErrors(accountController.registerAccount)
+)
 
-  // Route to build the update account details screen
+// Route to build the update account details screen
 router.get("/update/:account_id", 
 (req, res, next) => utilities.checkLogin(req, res, next, ['admin', 'employee', "client"]),
 utilities.handleErrors(accountController.buildUpdateAccount))
 
-// Route to register a new account
-// Process the registration data
+// Route to update account details
 router.post(
   "/update",
+  (req, res, next) => utilities.checkLogin(req, res, next, ['admin', 'employee', "client"]),
+  regValidate.updateRules(),
+  regValidate.checkUpdateData,
+utilities.handleErrors(accountController.updateAccount)
+)
 
-  utilities.handleErrors(accountController.updateAccount)
+// Route to update account password
+router.post(
+  "/updatepassword",
+  (req, res, next) => utilities.checkLogin(req, res, next, ['admin', 'employee', "client"]),
+  regValidate.passwordRules(),
+  regValidate.checkPasswordData,
+  utilities.handleErrors(accountController.updatePassword)
+)
+
+// Route to logout account
+router.get(
+  "/clear-cookie",
+  utilities.handleErrors(accountController.logOut)
 )
 module.exports = router;

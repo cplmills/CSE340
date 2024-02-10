@@ -173,4 +173,15 @@ Util.checkLogin = (req, res, next, options) => {
   }
  }
 
+/* ****************************************
+ *  Process Logout
+ * ************************************ */
+Util.logout = (req, res, next, options) => {
+  try {
+
+  } catch (err) {
+    flash("error", err.message)
+    res.redirect("/account")
+  }
+}
 module.exports = Util

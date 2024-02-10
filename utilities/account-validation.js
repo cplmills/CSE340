@@ -6,7 +6,7 @@ const accountModel = require('../models/account-model')
 /*  **********************************
  *  Registration Data Validation Rules
  * ********************************* */
-validate.registationRules = () => {
+validate.registrationRules = () => {
     return [
       // firstname is required and must be string
       body("account_firstname")
@@ -91,7 +91,8 @@ validate.loginRules = () => {
           minNumbers: 1,
           minSymbols: 1,
         })
-        .withMessage("Password does not meet requirements."),
+        .withMessage("Password does not meet requirements.")
+
     ]
   }
 
@@ -118,7 +119,7 @@ validate.checkLoginData = async (req, res, next) => {
   }
 
 /*  **********************************
- *  Registration Data Validation Rules
+ *  Update Data Validation Rules
  * ********************************* */
 validate.updateRules = () => {
   return [
@@ -139,9 +140,9 @@ validate.updateRules = () => {
     .trim()
     .isEmail()
     .normalizeEmail() // refer to validator.js docs
-    .withMessage("A valid email is required.")
+    .withMessage("A valid email is required."),
   ]
-}
+};
 
  /* ******************************
  * Check data and return errors or continue to registration
@@ -156,7 +157,7 @@ validate.updateRules = () => {
       errors,
       title: "Update Account",
       nav,
-      accountdata: req.body
+      accountdata: res.locals.accountData
     })
     return
   }
@@ -164,7 +165,7 @@ validate.updateRules = () => {
 }
 
 /*  **********************************
- *  Login Data Validation Rules
+ *  Password Validation Rules
  * ********************************* */
 validate.passwordRules = () => {
   return [
@@ -178,7 +179,7 @@ validate.passwordRules = () => {
         minNumbers: 1,
         minSymbols: 1,
       })
-      .withMessage("Password does not meet requirements."),
+      .withMessage("Password does not meet requirements.")
   ]
 }
 
@@ -186,16 +187,16 @@ validate.passwordRules = () => {
  * Check data and return errors or continue to registration
  * ***************************** */
 validate.checkPasswordData = async (req, res, next) => {
-  const { account_password } = req.body
+  const { account_id, account_password } = req.body
   let errors = []
   errors = validationResult(req)
   if (!errors.isEmpty()) {
     let nav = await utilities.getNav()
-    res.render(`account/update/${account_id}`, {
+    res.render(`account/update`, {
       errors,
       title: "Update Account",
       nav,
-      accountdata: req.body
+      accountdata: res.locals.accountData
     })
     return
   }
