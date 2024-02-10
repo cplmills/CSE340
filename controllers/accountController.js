@@ -23,7 +23,7 @@ async function buildLogin(req, res, next) {
 async function buildManagementView(req, res, next) {
   let nav = await utilities.getNav()
   let accountData = res.locals.accountData
-  let headingCode = '<h1>Account Management</h1>'
+  let headingCode = ''
   let updateLink = ''
   updateLink += `<a title="Update Account Information" href="/account/update/${accountData.account_id}">Update Account Information</a>`
   let loggedInAs = accountData.account_type.toLowerCase()
@@ -34,9 +34,10 @@ async function buildManagementView(req, res, next) {
     updateLink += `<h2>Inventory Management</h2>`
     updateLink += `<a title="Manage Inventory" href="/inv/">Manage Inventory</a>`
   }
-  let title = headingCode + updateLink
+  let content = headingCode + updateLink
   res.render("account/management", {
-    title,
+    title: "Account Management",
+    content,
     nav,
     errors: null,
   })
