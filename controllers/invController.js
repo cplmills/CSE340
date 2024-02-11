@@ -29,7 +29,7 @@ invCont.buildByInventoryId = async function (req, res, next) {
   const content = await utilities.buildInventoryItem(data)
   let nav = await utilities.getNav()
   const vehicleName = data[0].inv_make + " - " + data[0].inv_model
-  res.render("./inventory/inventoryId", {
+  res.render("./inventory/inventoryid", {
     title: vehicleName,
     nav,
     content,
