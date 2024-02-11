@@ -5,19 +5,17 @@
     <div id="tools">
       <% if (isAuthenticated) { %>
         <div>
-          <a title="Click to log in" href="/account/login">My Account</a>
-        </div>
-        <div>
           <a title="Welcome Basic" href="/account/">Welcome Basic</a>
         </div>
         <div>
           <a title="Logout" href="/account/logout">Logout</a>
         </div>
-      <% } %>
-      <% if (!isAuthenticated) { %>
-        <div>
-          <a title="Login" href="/account/">Login</a>
-        </div>
+        <% } %>
+        <% if (!isAuthenticated) { %>
+          <div>
+            <a title="Click to log in" href="/account/login">My Account</a>
+          </div>
+
       <% } %>
       </div>
 </header>
