@@ -15,6 +15,13 @@ body {
 
 }
 
+.notice {
+  background-color: rgb(250, 182, 182);
+  border: 1px solid black;
+  padding: 10px;
+  list-style: none;
+}
+
 .blueTxt {
   color: var(--sitemain);
 }
