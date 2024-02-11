@@ -22,22 +22,8 @@ async function buildLogin(req, res, next) {
 * *************************************** */
 async function buildManagementView(req, res, next) {
   let nav = await utilities.getNav()
-  let accountData = res.locals.accountData
-  let headingCode = ''
-  let updateLink = ''
-  updateLink += `<a title="Update Account Information" href="/account/update/${accountData.account_id}">Update Account Information</a>`
-  let loggedInAs = accountData.account_type.toLowerCase()
-  if (loggedInAs === "client"){
-    headingCode += `<h2>Welcome ${res.locals.accountData.account_firstname}</h2>`
-  } else if (loggedInAs === "admin" || loggedInAs === "employee"){
-    headingCode += `<h2>Welcome ${accountData.account_firstname}</h2>`
-    updateLink += `<h2>Inventory Management</h2>`
-    updateLink += `<a title="Manage Inventory" href="/inv/">Manage Inventory</a>`
-  }
-  let content = headingCode + updateLink
   res.render("account/management", {
     title: "Account Management",
-    content,
     nav,
     errors: null,
   })
@@ -148,7 +134,6 @@ async function registerAccount(req, res) {
 * *************************************** */
 async function buildUpdateAccount(req, res, next) {
   let nav = await utilities.getNav()
-  res.locals.accountData = await accountModel.getAccountByID(res.locals.accountData.account_id)
   res.render("account/update", {
     title: "Update Account",
     nav,
@@ -162,17 +147,14 @@ async function buildUpdateAccount(req, res, next) {
 * *************************************** */
 async function updateAccount(req, res) {
   let nav = await utilities.getNav()
-  let accountdata = res.locals.accountData
-
+  console.error(locals.accountData)
   const { account_id, account_firstname, account_lastname, account_email } = req.body
   // if the details form is submitted
   if (req.body.account_lastname) {
-    let checkEmail = accountdata.account_email === account_email ? false : true
-    console.log(`Information Form Submitted: Email changed: ${checkEmail}`)
+    let checkEmail = locals.accountData.account_email === account_email ? false : true
     // if the email field has been changed and the selected email already exists
-    if (checkEmail && accountModel.checkExistingEmail(accountdata.account_email)) {
-      console.error("Account exists already")
-      res.locals.accountData.account_email = account_email
+    if (checkEmail && accountModel.checkExistingEmail(locals.accountData.account_email)) {
+      locals.accountData.account_email = account_email
       req.flash("notice", 'Sorry, that email address is already in use.')
       res.redirect("/account")
 
@@ -185,12 +167,15 @@ async function updateAccount(req, res) {
         account_email,
       )
       if (regResult) {
-        //res.clearCookie('jwt', { httpOnly: true })
+        const accountData = await accountModel.getAccountByID(account_id)
+        const accessToken = jwt.sign(accountData , process.env.ACCESS_TOKEN_SECRET, { expiresIn: 3600 * 1000 })
+        res.cookie("jwt", accessToken, { httpOnly: true, maxAge: 3600 * 1000, overwrite: true })
+        res.locals.accountData = accountData
         req.flash(
           "notice",
           `Information Successfully Updated, Please Login Again to Refresh Your Account`
         )
-        res.redirect("/account/login")
+        res.redirect("/account/")
 
       } else {
         req.flash("notice", 'Sorry, there was an error processing the update.')
