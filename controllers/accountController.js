@@ -147,7 +147,6 @@ async function buildUpdateAccount(req, res, next) {
 * *************************************** */
 async function updateAccount(req, res) {
   let nav = await utilities.getNav()
-  console.error(locals.accountData)
   const { account_id, account_firstname, account_lastname, account_email } = req.body
   // if the details form is submitted
   if (req.body.account_lastname) {
