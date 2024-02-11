@@ -149,11 +149,13 @@ async function updateAccount(req, res) {
   let nav = await utilities.getNav()
   const { account_id, account_firstname, account_lastname, account_email } = req.body
   // if the details form is submitted
+  let accountData = accountModel.getAccountByID(res.locals.accountData.account_ID) 
+  //res.locals.accountData = accountData
   if (req.body.account_lastname) {
-    let checkEmail = locals.accountData.account_email === account_email ? false : true
+    let checkEmail = res.locals.accountData.account_email === account_email ? false : true
     // if the email field has been changed and the selected email already exists
-    if (checkEmail && accountModel.checkExistingEmail(locals.accountData.account_email)) {
-      locals.accountData.account_email = account_email
+    if (checkEmail && accountModel.checkExistingEmail(res.locals.accountData.account_email)) {
+      res.locals.accountData.account_email = account_email
       req.flash("notice", 'Sorry, that email address is already in use.')
       res.redirect("/account")
 
@@ -172,7 +174,7 @@ async function updateAccount(req, res) {
         res.locals.accountData = accountData
         req.flash(
           "notice",
-          `Information Successfully Updated, Please Login Again to Refresh Your Account`
+          `Information Successfully Updated!`
         )
         res.redirect("/account/")
 
