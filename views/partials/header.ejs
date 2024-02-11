@@ -14,5 +14,10 @@
           <a title="Logout" href="/account/clear-cookie">Logout</a>
         </div>
       <% } %>
+      <% if (!isAuthenticated) { %>
+        <div>
+          <a title="Login" href="/account/">Login</a>
+        </div>
+      <% } %>
       </div>
 </header>
