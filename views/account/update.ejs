@@ -13,25 +13,25 @@
 <div class="login-box">
 <div class="form-container">
     <form action="/account/update/" method="post" name="info_form">
-      <input type="hidden" name="account_id" value="<%-accountdata.account_id%>">
+      <input type="hidden" name="account_id" value="<%- locals.accountData.account_id %>">
       <fieldset>
         <legend>Account Update</legend>
         <span class="password-info">All Fields are Required</span>
         <label for="account_firstname">First Name:</label>
-        <input type="text" id="account_firstname" name="account_firstname" value="<%- accountdata.account_firstname %>" required>
+        <input type="text" id="account_firstname" name="account_firstname" value="<%- locals.accountData.account_firstname %>" required>
   
         <label for="account_lastname">Last Name:</label>
-        <input type="text" id="account_lastname" name="account_lastname"  value="<%- accountdata.account_lastname %>" required>
+        <input type="text" id="account_lastname" name="account_lastname"  value="<%- locals.accountData.account_lastname %>" required>
   
         <label for="account_email">Email Address:</label>
-        <input type="email" id="account_email" name="account_email"  value="<%- accountdata.account_email %>" required>
+        <input type="email" id="account_email" name="account_email"  value="<%- locals.accountData.account_email %>" required>
       </fieldset>
       <button type="submit">Update Info</button>
     </form>
 
     <form action="/account/updatepassword/" method="post" name="password_form">
       <fieldset>
-        <input type="hidden" name="account_id" value="<%-accountdata.account_id%>">
+        <input type="hidden" name="account_id" value="<%- locals.accountData.account_id%>">
         <legend>Change Password</legend>
           <span class="password-info">All Fields are Required</span>
           <label for="account_password">Change Password:</label>
