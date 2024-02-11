@@ -247,6 +247,7 @@ async function updatePassword(req, res) {
 async function logOut(req, res) {
   let nav = await utilities.getNav()
   res.clearCookie('jwt', { httpOnly: true })
+  isAuthenticated = 0
   req.flash("notice", 'Logout Successful, Thank You!')
   res.redirect("/")
 }
