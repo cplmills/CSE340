@@ -61,7 +61,6 @@ async function accountLogin(req, res) {
    return
   }
   try {
-    console.log(`checking password: ${account_password} - ${accountData.account_password}`)
     const passme = await bcrypt.compare(account_password, accountData.account_password)
     console.log(`passme: ${passme}`)
     if (passme) {
@@ -149,7 +148,6 @@ async function registerAccount(req, res) {
 * *************************************** */
 async function buildUpdateAccount(req, res, next) {
   let nav = await utilities.getNav()
-  //res.locals.accountData = await accountModel.getAccountByEmail(res.locals.accountData.account_email)
   res.locals.accountData = await accountModel.getAccountByID(res.locals.accountData.account_id)
   res.render("account/update", {
     title: "Update Account",
@@ -165,6 +163,7 @@ async function buildUpdateAccount(req, res, next) {
 async function updateAccount(req, res) {
   let nav = await utilities.getNav()
   let accountdata = res.locals.accountData
+
   const { account_id, account_firstname, account_lastname, account_email } = req.body
   // if the details form is submitted
   if (req.body.account_lastname) {
@@ -186,11 +185,12 @@ async function updateAccount(req, res) {
         account_email,
       )
       if (regResult) {
+        //res.clearCookie('jwt', { httpOnly: true })
         req.flash(
           "notice",
-          `Information Successfully Updated`
+          `Information Successfully Updated, Please Login Again to Refresh Your Account`
         )
-        res.redirect("/account/")
+        res.redirect("/account/login")
 
       } else {
         req.flash("notice", 'Sorry, there was an error processing the update.')
@@ -247,6 +247,7 @@ async function updatePassword(req, res) {
 async function logOut(req, res) {
   let nav = await utilities.getNav()
   res.clearCookie('jwt', { httpOnly: true })
+  isAuthenticated = 0
   req.flash("notice", 'Logout Successful, Thank You!')
   res.redirect("/")
 }

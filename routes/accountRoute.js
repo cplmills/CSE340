@@ -57,7 +57,7 @@ router.post(
 
 // Route to logout account
 router.get(
-  "/clear-cookie",
+  "/logout",
   utilities.handleErrors(accountController.logOut)
 )
 module.exports = router;
