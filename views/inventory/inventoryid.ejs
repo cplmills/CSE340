@@ -10,3 +10,29 @@
 
 <!-- Display main content -->
 <%- content %>
+<h2>Customer Reviews</h2>
+
+<ol id="reviews_list">
+    <%- reviewList %>
+</ol>
+
+<% if (!isAuthenticated) {
+    %><p>You must <a href="/account/login">login</a> to write a review</p><%
+} else {
+%>
+<div class="login-box">
+<form id="frmReview" class="form-container" action="/post-review">
+    <input type="hidden" name="account_id" value="<%-accountData.account_id%>" />
+    <input type="hidden" name="inv_id" value="<%-invId%>">
+    <label for="review_screenname">Screen Name:</label><br>
+    <input type="text" id="screenname" name="review_screenname"><br><br>
+    
+    <label for="txtReview">Review:</label><br>
+    <textarea id="txtReview" name="review_body" rows="4" cols="50"></textarea><br><br>
+    
+    <input type="submit" value="Submit Review" class="button">
+</form>
+</div>
+<%
+  
+}%>

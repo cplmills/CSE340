@@ -62,4 +62,10 @@ router.post("/delete/",
 (req, res, next) => utilities.checkLogin(req, res, next, ['admin', 'employee']),
 utilities.handleErrors(invController.deleteInventory))
 
+// Route to post a review
+router.post("/post-review/",
+(req, res, next) => utilities.checkLogin(req, res, next, ['admin', 'employee', 'client']),
+utilities.handleErrors(invController.postReview))
+
+
 module.exports = router;

@@ -1,0 +1,9 @@
+<h2>Customer Reviews</h2>
+
+<ol id="reviews_list">
+    <%- reviewList %>
+</ol>
+
+<% if (isLoggedIn) {
+    %><p>You must <a href="/account/login">login</a> to write a review</p><%
+} %>

@@ -24,15 +24,24 @@ invCont.buildByClassificationId = async function (req, res, next) {
  * ************************** */
 invCont.buildByInventoryId = async function (req, res, next) {
   const inventoryId = req.params.inventoryId
-
   const data = await invModel.getInventoryByInventoryId(inventoryId)
+  console.error("reviews" + data.length)
+  const vehicleName = data[0].inv_make + " - " + data[0].inv_model
   const content = await utilities.buildInventoryItem(data)
   let nav = await utilities.getNav()
-  const vehicleName = data[0].inv_make + " - " + data[0].inv_model
+  let reviews = await invCont.buildReviewsByInventoryId(inventoryId)
+  console.error(reviews)
+  if (reviews.length === 0) {
+    reviews = `<span class="yellowNotice">Be the first to write a review</span>`
+  }
+
   res.render("./inventory/inventoryid", {
     title: vehicleName,
     nav,
+    accountData: res.locals.accountData,
+    reviewList: reviews,
     content,
+    invId: inventoryId
   })
 }
 
@@ -361,5 +370,52 @@ invCont.deleteInventory = async function (req, res, next) {
   }
 }
 
+/* ***************************
+ *  Build reviews section
+ * ************************** */
+invCont.buildReviewsByInventoryId = async function (inv_id, req, res, next) {
+  const reviews = await invModel.getReviewsListByInventoryId(inv_id)
+  // Sort reviews by date in descending order (newest review first)
+  if (reviews.length === 0) {
+    return []
+  }
+  reviews.sort((a, b) => new Date(b.review_date) - new Date(a.review_date));
+
+  let listItems = '';
+
+  const options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone };
+
+  // Loop through the sorted reviews array and generate HTML list items
+  for (let i = 0; i < reviews.length; i++) {
+    const review = reviews[i]
+    const date = new Date(review.review_date).toLocaleDateString('en-US', options);
+    listItems += '<li>';
+    listItems += `<B>${review.account_firstname}</B> - Written on: ${date}`
+    listItems += `<p class="reviewBody"> Review: ${review.review_body}</p></li>`;
+  }
+  console.error(listItems);
+
+  return listItems;
+}
+
+/* ****************************************
+*  Process New Review for a Vehicle
+* *************************************** */
+invCont.postReview = async function (req, res, next) {
+  let nav = await utilities.getNav()
+  const {
+    review_screenname,
+    account_id,
+    inv_id 
+  } = req.body
+  const postResult = await invModel.postReview(
+    review_screenname, account_id, inv_id
+  )
+
+  if (postResult) {
+
+  }
+
+}  
 module.exports = invCont
 

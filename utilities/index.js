@@ -184,4 +184,6 @@ Util.logout = (req, res, next, options) => {
     res.redirect("/account")
   }
 }
+
+
 module.exports = Util

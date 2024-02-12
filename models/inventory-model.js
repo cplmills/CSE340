@@ -1,5 +1,4 @@
 const pool = require("../database/")
-
 /* ***************************
  *  Get all classification data
  * ************************** */
@@ -124,4 +123,31 @@ async function deleteInventory(inv_id) {
   }
 }
 
-module.exports = {getClassifications, getInventoryByClassificationId, getInventoryByInventoryId, setInventoryClassification, setInventoryItem, updateInventory, deleteInventory};
+/* ***************************
+ *  Retrieve Reviews for Inventory 
+ * ************************** */
+async function getReviewsListByInventoryId(inv_id) {
+  try {
+    const sql = "SELECT r.account_id, r.review_date, r.review_body, r.review_active, r.review_vehicle, a.account_firstname FROM reviews r INNER JOIN account a ON r.account_id = a.account_id WHERE review_vehicle = $1";
+
+    // Assuming you're using async/await
+    const reviewsResult = await pool.query(sql, [inv_id]);
+    const reviews = reviewsResult.rows;
+    
+    return reviews;
+
+  } catch (error) {
+    console.error("Error Retrieving Reviews: " + error)
+  }
+}
+
+module.exports = {
+  getClassifications,  
+  getInventoryByClassificationId, 
+  getInventoryByInventoryId, 
+  setInventoryClassification, 
+  setInventoryItem, 
+  updateInventory, 
+  deleteInventory,
+  getReviewsListByInventoryId
+};
