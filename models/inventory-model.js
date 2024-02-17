@@ -224,14 +224,15 @@ async function deleteReview(review_id) {
 /* ***************************
  *  Check review owner
  * ************************** */
-async function isOwnerofReview(review_id, account_id) {
+async function isOwnerofReview(res, req, review_id, account_id) {
   try {
 
     const sql = "SELECT COUNT(*) FROM reviews WHERE review_id = $1 and account_id = $2"
     console.log(sql)
-    const data = await pool.query(sql, [review_id, account_id])
-    if (data.rowCount >= 0) {
-    return true
+    const data = await pool.query(sql, [review_id, res.locals.accountData.account_id])
+    const count = parseInt(data.rows[0].count)
+    if (count > 0) {
+      return true
     } else {
       return false
     }
