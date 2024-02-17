@@ -1,5 +1,4 @@
 const pool = require("../database/")
-
 /* ***************************
  *  Get all classification data
  * ************************** */
@@ -31,7 +30,7 @@ async function getInventoryByClassificationId(classification_id) {
 async function getInventoryByInventoryId(invid) {
   try {
     const data = await pool.query(
-      `SELECT * FROM public.inventory AS i WHERE i.inv_id = $1`,
+      `SELECT * FROM inventory i WHERE i.inv_id = $1`,
       [invid]
     )
     return data.rows
@@ -124,4 +123,138 @@ async function deleteInventory(inv_id) {
   }
 }
 
-module.exports = {getClassifications, getInventoryByClassificationId, getInventoryByInventoryId, setInventoryClassification, setInventoryItem, updateInventory, deleteInventory};
+/* ***************************
+ *  Retrieve Reviews for Inventory 
+ * ************************** */
+async function getReviewsListByInventoryId(inv_id) {
+  try {
+    const sql = "SELECT r.account_id, r.review_date, r.review_body, r.review_active, r.review_vehicle, a.account_firstname, a.review_screenname FROM reviews r INNER JOIN account a ON r.account_id = a.account_id WHERE review_vehicle = $1";
+
+    // Assuming you're using async/await
+    const reviewsResult = await pool.query(sql, [inv_id]);
+    const reviews = reviewsResult.rows;
+    
+    return reviews;
+
+  } catch (error) {
+    console.error("Error Retrieving Reviews: " + error)
+  }
+}
+
+/* ***************************
+ *  Post a new review
+ * ************************** */
+async function postReview(account_id, inv_id, review_body, review_active=true) {
+  try {
+    const today = new Date().toDateString()
+    let myQuery = `INSERT INTO reviews (account_id, review_date, review_body, review_active, review_vehicle ) VALUES ($1, $2, $3, $4, $5)`
+    const data = await pool.query(
+      myQuery,
+      [account_id, today, review_body, review_active=true, inv_id ]
+    )
+    return data.rows
+  } catch (error) {
+    console.error("PostReview error " + error)
+  }
+}
+
+/* ***************************
+ *  Get reviews by account ID
+ * ************************** */
+async function getReviewsByAccountID(account_id) {
+  try {
+    let myQuery = `SELECT r.review_id, r.review_date, r.review_active, i.inv_make, i.inv_model, i.inv_year, i.inv_id FROM reviews r INNER JOIN inventory i ON r.review_vehicle = i.inv_id WHERE r.account_id = $1`
+    const data = await pool.query(
+      myQuery,
+      [account_id]
+    )
+    return data
+  } catch (error) {
+    console.error("Get Reviews error " + error)
+  }
+}
+
+/* ***************************
+ *  Get reviews by REVIEW_ID
+ * ************************** */
+async function getReviewByReviewID(review_id) {
+  try {
+    let myQuery = `SELECT r.review_id, r.review_body, a.review_screenname, a.account_id, r.review_date, r.review_active, i.inv_make, i.inv_model, i.inv_year, i.inv_id FROM reviews r INNER JOIN inventory i ON r.review_vehicle = i.inv_id INNER JOIN account a ON r.account_id = a.account_id WHERE r.review_id = $1 LIMIT 1`
+    const data = await pool.query(
+      myQuery,
+      [review_id]
+    )
+    return data.rows[0]
+  } catch (error) {
+    console.error("Get Review by REVIEW ID error " + error)
+  }
+}
+
+/* ***************************
+ *  Edit a review
+ * ************************** */
+async function editReview(account_id, inv_id, review_body, review_active=true, review_id) {
+  try {
+    const today = new Date().toDateString()
+    let myQuery = `UPDATE reviews SET account_id=$1, review_date=$2, review_body=$3, review_active=$4, review_vehicle=$5 WHERE review_id = $6`
+    const data = await pool.query(
+      myQuery,
+      [account_id, today, review_body, review_active, inv_id, review_id ]
+    )
+    return data.rows
+  } catch (error) {
+    console.error("PostReview error " + error)
+  }
+}
+
+/* ***************************
+ *  Delete a Review
+ * ************************** */
+async function deleteReview(review_id) {
+  try {
+    const sql = "DELETE FROM reviews WHERE review_id = $1"
+    console.log(sql)
+    const data = await pool.query(sql, [review_id])
+    return data
+  } catch (error) {
+    console.error("Delete Review error: " + error)
+  }
+}
+
+/* ***************************
+ *  Check review owner
+ * ************************** */
+async function isOwnerofReview(review_id, account_id) {
+  try {
+
+    const sql = "SELECT COUNT(*) FROM reviews WHERE review_id = $1 and account_id = $2"
+    console.log(sql)
+    const data = await pool.query(sql, [review_id, account_id])
+    if (data.rowCount >= 0) {
+    return true
+    } else {
+      return false
+    }
+  } catch (error) {
+    console.error("Check Review Owner error: " + error)
+  }
+}
+
+
+module.exports = {
+  getClassifications,  
+  getInventoryByClassificationId, 
+  getInventoryByInventoryId, 
+  setInventoryClassification, 
+  setInventoryItem, 
+  updateInventory, 
+  deleteInventory,
+  getReviewsListByInventoryId,
+  postReview,
+  getReviewsByAccountID,
+  editReview,
+  getReviewByReviewID,
+  deleteReview,
+  isOwnerofReview
+};
+

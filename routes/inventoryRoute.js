@@ -57,9 +57,35 @@ router.get("/delete/:inventory_id",
 (req, res, next) => utilities.checkLogin(req, res, next, ['admin', 'employee']),
 utilities.handleErrors(invController.buildDeleteInventoryView))
 
-// Route to update inventory
+// Route to DELETE inventory
 router.post("/delete/",
 (req, res, next) => utilities.checkLogin(req, res, next, ['admin', 'employee']),
 utilities.handleErrors(invController.deleteInventory))
 
+// Route to post a review
+router.post("/post-review/",
+(req, res, next) => utilities.checkLogin(req, res, next, ['admin', 'employee', 'client']),
+invValidate.newReviewRules(),
+invValidate.checkReviewData,
+utilities.handleErrors(invController.postReview))
+
+// Route to show modify review
+router.get("/edit-review/:review_id", utilities.handleErrors(invController.buildEditReview))
+
+// Route to post an edit to a review
+router.post("/edit-review/",
+(req, res, next) => utilities.checkLogin(req, res, next, ['admin', 'employee', 'client']),
+invValidate.editReviewRules(),
+invValidate.checkEditReviewData,
+utilities.handleErrors(invController.editReview))
+
+// Route to SHOW DELETE a review
+router.get("/delete-review/:review_id",
+(req, res, next) => utilities.checkLogin(req, res, next, ['admin', 'employee']),
+utilities.handleErrors(invController.buildDeleteReviewView))
+
+// Route to DELETE a review
+router.post("/delete-review/",
+(req, res, next) => utilities.checkLogin(req, res, next, ['admin', 'employee', 'client']),
+utilities.handleErrors(invController.deleteReview))
 module.exports = router;

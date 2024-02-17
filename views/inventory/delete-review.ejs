@@ -1,0 +1,35 @@
+<!-- Check for a heading and display a heading and title if exists -->
+<% if (errors) { %>
+    <ul class="notice">
+   <% errors.array().forEach(error => { %>
+     <li><%= error.msg %></li>
+  <%  }) %>
+   </ul>
+  <% } %>
+  
+  <% if (title) { %>
+    <h1><%- title %></h1>
+    <% } else {
+      res.redirect('/')
+} %>
+
+<%- messages() %>
+<div class="center-container">
+  <div class="form-container">
+    <form action="/inv/delete-review/" method="post" id="deleteForm">
+      <label for="review_screenname">Screen Name:</label>
+      <input type="text" id="review_screenname" name="review_screenname" value="<%- review.review_screenname %>" disabled>
+      <br>
+      <label for="review_body">Review:</label>
+      <textarea id="review_body" name="review_body" readonly><%- review.review_body %></textarea>
+      <br>
+      
+      <button type="submit">Delete Review</button>
+      <p>Confirm Deletion - The delete is permanent.</p>
+      <input type="hidden" name="review_id"
+      <% if(review.review_id) { %> value="<%= review.review_id %>"
+      <% } %>>
+
+    </form>
+  </div>
+</div>

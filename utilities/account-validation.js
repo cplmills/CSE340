@@ -121,7 +121,7 @@ validate.checkLoginData = async (req, res, next) => {
 /*  **********************************
  *  Update Data Validation Rules
  * ********************************* */
-validate.updateRules = () => {
+validate.updateRules = (req, res, next) => {
   return [
     // firstname is required and must be string
     body("account_firstname")
@@ -141,6 +141,12 @@ validate.updateRules = () => {
     .isEmail()
     .normalizeEmail() // refer to validator.js docs
     .withMessage("A valid email is required."),
+
+    // Valid screen name is required and cannot already exist in the DB
+    body("review_screenname")
+    .trim()
+    .isLength({ min: 5 })
+    .withMessage("Screen Name must be at least 5 characters")
   ]
 };
 

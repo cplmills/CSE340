@@ -1,0 +1,29 @@
+<!-- Check for a heading and display a heading and title if exists -->
+<% if (title) { %>
+    <h1><%= title %></h1>
+    <% } else {
+      res.redirect('/')
+    } %>
+
+<!-- Future functionality to display an error message -->
+<%- messages() 
+%>
+
+<!-- Display main content -->
+<div class="login-box">
+<form id="frmReview" class="form-container" action="/inv/edit-review" method="post">
+    <input type="hidden" name="inv_id" value="<%- review.inv_id %>">
+    <input type="hidden" name="account_id" value="<%- review.account_id %>">
+    <input type="hidden" name="review_id" value="<%- review.review_id %>">
+    <label for="review_screenname">Screen Name:</label>
+    <p class="password-info">Your Screen Name can be changed in your account settings.</p>
+    <input type="text" id="screenname" name="review_screenname" value="<%- review.review_screenname %>" disabled>
+    
+    <label for="txtReview">Review:</label>
+    <p class="password-info">Your review must be at least 20 characters long</p>
+    <textarea id="txtReview" name="review_body" rows="4" cols="50" minlength="20" required><%- review.review_body %></textarea>
+    
+    <input type="submit" value="Submit Review" class="button">
+</form>
+</div>
+
