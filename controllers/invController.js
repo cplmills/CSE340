@@ -431,7 +431,7 @@ invCont.buildEditReview = async function (req, res, next) {
     if (review.length === 0) {
       return []
     }
-    const isOwner = await invModel.isOwnerofReview(review_id, review.account_id)
+    const isOwner = await invModel.isOwnerofReview(res, req, review_id, review.account_id)
     if (isOwner) {
       res.render("./inventory/edit-review", {
         title: "Edit Review",

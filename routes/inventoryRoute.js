@@ -70,7 +70,8 @@ invValidate.checkReviewData,
 utilities.handleErrors(invController.postReview))
 
 // Route to show modify review
-router.get("/edit-review/:review_id", utilities.handleErrors(invController.buildEditReview))
+router.get("/edit-review/:review_id", 
+(req, res, next) => utilities.handleErrors(invController.buildEditReview(req, res, next)))
 
 // Route to post an edit to a review
 router.post("/edit-review/",
