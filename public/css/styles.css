@@ -22,6 +22,13 @@ body {
   list-style: none;
 }
 
+.success {
+  background-color: rgb(168, 250, 175);
+  border: 1px solid black;
+  padding: 10px;
+  list-style: none;
+}
+
 .blueTxt {
   color: var(--sitemain);
 }

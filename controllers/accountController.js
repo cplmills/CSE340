@@ -113,7 +113,7 @@ async function registerAccount(req, res) {
 
     if (regResult) {
       req.flash(
-        "notice",
+        "success",
         `Congratulations, you\'re registered ${account_firstname}. Please log in.`
       )
       res.status(201).render("account/login", {
@@ -185,7 +185,7 @@ async function updateAccount(req, res) {
       res.cookie("jwt", accessToken, { httpOnly: true, maxAge: 3600 * 1000, overwrite: true })
       res.locals.accountData = accountData
       req.flash(
-        "notice",
+        "success",
         `Information Successfully Updated!`
       )
       res.redirect("/account/")
@@ -223,7 +223,7 @@ async function updatePassword(req, res) {
       regResult = await accountModel.changePassword(hashedPassword, account_id)
       if (regResult) {
         req.flash(
-          "notice",
+          "success",
           `Password Successfully Updated`
         )
         res.status(201).redirect("/account/")
@@ -246,7 +246,7 @@ async function logOut(req, res) {
   let nav = await utilities.getNav()
   res.clearCookie('jwt', { httpOnly: true })
   isAuthenticated = 0
-  req.flash("notice", 'Logout Successful, Thank You!')
+  req.flash("success", 'Logout Successful, Thank You!')
   res.redirect("/")
 }
 

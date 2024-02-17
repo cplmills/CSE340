@@ -88,7 +88,7 @@ invCont.registerClassification = async function (req, res, next) {
   )
   if (invResult) {
     req.flash(
-      "notice",
+      "success",
       `Congratulations, you added: ${classification_name} classification.`
     )
     let nav = await utilities.getNav()
@@ -156,7 +156,7 @@ invCont.registerInventoryItem = async function (req, res, next) {
   )
   if (invResult) {
     req.flash(
-      "notice",
+      "success",
       `Congratulations, you added: ${inv_make + ' ' + inv_model}.`
     )
     let nav = await utilities.getNav()
@@ -263,7 +263,7 @@ invCont.updateInventory = async function (req, res, next) {
 
   if (updateResult) {
     const itemName = updateResult.inv_make + " " + updateResult.inv_model
-    req.flash("notice", `The ${itemName} was successfully updated.`)
+    req.flash("success", `The ${itemName} was successfully updated.`)
     res.redirect("/inv/")
   } else {
     // const classificationSelect = await utilities.buildClassificationList(updateResult.classification_id)
@@ -342,7 +342,7 @@ invCont.deleteInventory = async function (req, res, next) {
 
   if (deleteResult) {
     const itemName = deleteResult.inv_make
-    req.flash("notice", `The Vehicle ID ${inv_id} was successfully deleted.`)
+    req.flash("success", `The Vehicle ID ${inv_id} was successfully deleted.`)
     res.redirect("/inv/")
   } else {
     const cats = await utilities.buildClassificationList()
@@ -413,7 +413,7 @@ invCont.postReview = async function (req, res, next) {
   )
 
   if (postResult) {
-    req.flash("notice", `Review Successfully Added. Thank You!`)
+    req.flash("success", `Review Successfully Added. Thank You!`)
     res.redirect(`/inv/detail/${inv_id}`)
   }
 
@@ -467,7 +467,7 @@ invCont.editReview = async function (req, res, next) {
     )
 
     if (postResult) {
-      req.flash("notice", `Review Successfully Changed. Thank You!`)
+      req.flash("success", `Review Successfully Changed. Thank You!`)
       res.redirect(`/inv/detail/${inv_id}`)
     }
   } catch(err) {
@@ -486,15 +486,21 @@ invCont.buildDeleteReviewView = async function (req, res, next) {
     const review_id = req.params.review_id
     const review = await invModel.getReviewByReviewID(review_id)
     // Sort reviews by date in descending order (newest review first)
+    const isOwner = await invModel.isOwnerofReview(res, req, review_id, review.account_id)
     if (review.length === 0) {
       return []
     }
-    res.render("./inventory/delete-review", {
-      title: "Delete Review",
-      nav,
-      review,
-      errors: null,
-    })
+    if (isOwner) {
+      res.render("./inventory/delete-review", {
+        title: "Delete Review",
+        nav,
+        review,
+        errors: null,
+      })
+    } else {
+      req.flash('notice',"You are not the owner of that review")
+      res.redirect("/account/")
+    }
   } catch(err) {
     console.error(err)
     throw new Error("Unable to Build Delete Review View. Please try again")
@@ -511,7 +517,7 @@ invCont.deleteReview = async function (req, res, next) {
     const deleteResult = await invModel.deleteReview(review_id)
 
     if (deleteResult) {
-      req.flash("notice", `Your review was successfully deleted.`)
+      req.flash("success", `Your review was successfully deleted.`)
     } else {
       req.flash("notice", "Sorry, the delete failed.")
     }
