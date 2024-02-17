@@ -29,9 +29,10 @@ async function getInventoryByClassificationId(classification_id) {
  * ************************** */
 async function getInventoryByInventoryId(invid) {
   try {
+    invid = parseInt(invid)
     const data = await pool.query(
       `SELECT * FROM inventory i WHERE i.inv_id = $1`,
-      parseInt([invid])
+      [invid]
     )
     return data.rows
   } catch (error) {
