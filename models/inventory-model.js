@@ -213,6 +213,7 @@ async function editReview(account_id, inv_id, review_body, review_active=true, r
  * ************************** */
 async function deleteReview(review_id) {
   try {
+    review_id = parseInt(review_id)
     const sql = "DELETE FROM reviews WHERE review_id = $1"
     console.log(sql)
     const data = await pool.query(sql, [review_id])

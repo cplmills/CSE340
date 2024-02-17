@@ -514,7 +514,7 @@ invCont.deleteReview = async function (req, res, next) {
   try {
     let nav = await utilities.getNav()
     const review_id = req.params.review_id
-    const deleteResult = await invModel.deleteReview(review_id)
+    const deleteResult = await invModel.deleteReview(req.body.review_id)
 
     if (deleteResult) {
       req.flash("success", `Your review was successfully deleted.`)
