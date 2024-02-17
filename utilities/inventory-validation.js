@@ -16,7 +16,7 @@ validate.classificationRules = () => {
     ]
   }
 
-  /* ******************************
+/* ******************************
  * Check data and return errors or continue to registration
  * ***************************** */
 validate.checkData = async (req, res, next) => {
@@ -191,5 +191,64 @@ validate.newInventoryRules = () => {
       .isNumeric()
   ]
 }
+
+/*  **********************************
+ *  Add Review Validation Rules
+ * ********************************* */
+validate.newReviewRules = () => {
+  return [
+    body("review_body")
+      .trim()
+      .escape()
+      .isLength({ min: 20})
+      .withMessage("Your review must be at least 20 characters long"
+      )
+  ]
+}
+
+/* ******************************
+ * Check data and return errors or continue to registration
+ * ***************************** */
+validate.checkReviewData = async (req, res, next) => {
+  let errors = []
+  errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    //let nav = await utilities.getNav()
+    req.flash("notice", errors.errors[0].msg)
+    res.redirect(`/inv/detail/${req.body.inv_id}`)
+    return
+  }
+  next()
+}
+
+/*  **********************************
+ *  EDIT Review Validation Rules
+ * ********************************* */
+validate.editReviewRules = () => {
+  return [
+    body("review_body")
+      .trim()
+      .escape()
+      .isLength({ min: 20})
+      .withMessage("Your review must be at least 20 characters long"
+      )
+  ]
+}
+
+/* ******************************
+ * Check data and return errors or continue to registration
+ * ***************************** */
+validate.checkEditReviewData = async (req, res, next) => {
+  let errors = []
+  errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    req.flash("notice", errors.errors[0].msg)
+    res.redirect(`/inv/edit-review/${req.body.review_id}`)
+    return
+  }
+  next()
+}
+
+
   module.exports = validate
 

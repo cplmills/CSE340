@@ -20,15 +20,18 @@
     %><p>You must <a href="/account/login">login</a> to write a review</p><%
 } else {
 %>
+<h2>Write a New Review</h2>
 <div class="login-box">
-<form id="frmReview" class="form-container" action="/post-review">
+<form id="frmReview" class="form-container" action="/inv/post-review" method="post">
     <input type="hidden" name="account_id" value="<%-accountData.account_id%>" />
     <input type="hidden" name="inv_id" value="<%-invId%>">
-    <label for="review_screenname">Screen Name:</label><br>
-    <input type="text" id="screenname" name="review_screenname"><br><br>
+    <label for="review_screenname">Screen Name:</label>
+    <p class="password-info">Your Screen Name can be changed in your <a href="/account/update/<%- accountData.account_id%>">account settings</a></p>
+    <input type="text" id="screenname" name="review_screenname" value="<%-accountData.review_screenname%>" disabled><br>
     
-    <label for="txtReview">Review:</label><br>
-    <textarea id="txtReview" name="review_body" rows="4" cols="50"></textarea><br><br>
+    <label for="txtReview">Review:</label>
+    <p class="password-info">Your review must be at least 20 characters long</p>
+    <textarea id="txtReview" name="review_body" rows="4" cols="50" minlength="20" required></textarea><br>
     
     <input type="submit" value="Submit Review" class="button">
 </form>

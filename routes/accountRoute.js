@@ -43,7 +43,7 @@ router.post(
   (req, res, next) => utilities.checkLogin(req, res, next, ['admin', 'employee', "client"]),
   regValidate.updateRules(),
   regValidate.checkUpdateData,
-utilities.handleErrors(accountController.updateAccount)
+  utilities.handleErrors(accountController.updateAccount)
 )
 
 // Route to update account password

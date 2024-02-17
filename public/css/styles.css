@@ -361,6 +361,10 @@ footer {
   min-width: 300px;
 }
 
+form legend {
+  border-radius: 8px;
+}
+
 label {
   display: block;
   margin-bottom: 8px;
@@ -369,7 +373,7 @@ label {
 input {
   width: 100%;
   padding: 8px;
-  margin-bottom: 16px;
+  margin-bottom: 8px;
   box-sizing: border-box;
 }
 

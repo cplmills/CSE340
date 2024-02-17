@@ -22,9 +22,11 @@ async function buildLogin(req, res, next) {
 * *************************************** */
 async function buildManagementView(req, res, next) {
   let nav = await utilities.getNav()
+  const reviews = await utilities.buildReviewsTable(req, res, next, res.locals.accountData.account_id)
   res.render("account/management", {
     title: "Account Management",
     nav,
+    reviews,
     errors: null,
   })
 }
@@ -147,50 +149,61 @@ async function buildUpdateAccount(req, res, next) {
 * *************************************** */
 async function updateAccount(req, res) {
   let nav = await utilities.getNav()
-  const { account_id, account_firstname, account_lastname, account_email } = req.body
-  // if the details form is submitted
-  let accountData = accountModel.getAccountByID(res.locals.accountData.account_ID) 
-  //res.locals.accountData = accountData
+  const { account_id, account_firstname, account_lastname, account_email, review_screenname } = req.body
+
+  // store account data to local accountData
+  let accountData = await accountModel.getAccountByID(res.locals.accountData.account_id) 
+  
+  // use the account_lastname to check if the details for was submitted
   if (req.body.account_lastname) {
     let checkEmail = res.locals.accountData.account_email === account_email ? false : true
     // if the email field has been changed and the selected email already exists
     if (checkEmail && accountModel.checkExistingEmail(res.locals.accountData.account_email)) {
       res.locals.accountData.account_email = account_email
       req.flash("notice", 'Sorry, that email address is already in use.')
-      res.redirect("/account")
-
-    // if email field has changed and new email is not in use
-    } else {
-      const regResult = await accountModel.updateAccount(
-        account_id,
-        account_firstname,
-        account_lastname,
-        account_email,
+      res.redirect(`/account/update/${accountData.account_id}`)
+      return
+    }
+    //if screen name has changed and the selected screenname already exists
+    const screenNameExists = await accountModel.checkExistingScreenname(req.body.review_screenname)
+    if ((accountData.review_screenname !== req.body.review_screenname) && screenNameExists){
+      req.flash("notice", 'Sorry, that screen name is already in use.')
+      res.redirect(`/account/update/${accountData.account_id}`)
+      return
+    }
+    
+    const regResult = await accountModel.updateAccount(
+      account_id,
+      account_firstname,
+      account_lastname,
+      account_email,
+      review_screenname
+    )
+    if (regResult) {
+      const accountData = await accountModel.getAccountByID(account_id)
+      const accessToken = jwt.sign(accountData , process.env.ACCESS_TOKEN_SECRET, { expiresIn: 3600 * 1000 })
+      res.cookie("jwt", accessToken, { httpOnly: true, maxAge: 3600 * 1000, overwrite: true })
+      res.locals.accountData = accountData
+      req.flash(
+        "notice",
+        `Information Successfully Updated!`
       )
-      if (regResult) {
-        const accountData = await accountModel.getAccountByID(account_id)
-        const accessToken = jwt.sign(accountData , process.env.ACCESS_TOKEN_SECRET, { expiresIn: 3600 * 1000 })
-        res.cookie("jwt", accessToken, { httpOnly: true, maxAge: 3600 * 1000, overwrite: true })
-        res.locals.accountData = accountData
-        req.flash(
-          "notice",
-          `Information Successfully Updated!`
-        )
-        res.redirect("/account/")
+      res.redirect("/account/")
 
-      } else {
-        req.flash("notice", 'Sorry, there was an error processing the update.')
-        res.status(500).render(`account/`, {
-          title: "Update Account Failed",
-          nav,
-          accountdata: res.locals.accountData,
-          errors: null,
+    } else {
+      req.flash("notice", 'Sorry, there was an error processing the update.')
+      res.status(500).render(`account/`, {
+        title: "Update Account Failed",
+        nav,
+        accountdata: res.locals.accountData,
+        errors: null,
       })
-      }
     }
   }
 }
-
+/* ****************************************
+*  Process Update Password
+* *************************************** */
 async function updatePassword(req, res) {
   let nav = await utilities.getNav()
   let accountdata = res.locals.accountData
@@ -204,7 +217,6 @@ async function updatePassword(req, res) {
     try {
       // regular password and cost (salt is generated automatically)
       hashedPassword = await bcrypt.hashSync(req.body.account_password, 10)
-      console.error(`HP: ${hashedPassword} - AP: ${req.body.account_password}`)
     } catch (e) {
       console.error(e)
     }

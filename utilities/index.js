@@ -186,4 +186,34 @@ Util.logout = (req, res, next, options) => {
 }
 
 
+/* **************************************
+* Build the categories dropdown
+* *************************************/
+Util.buildReviewsTable = async function (req, res, next, account_id) {
+  try {
+    const reviewList = await invModel.getReviewsByAccountID(account_id)
+    let htmlCode = `<table id="reviewTable"><thead><tr><th></th><th>Vehicle Reviewed</th><th>Date Reviewed</th><th></th><th></th></tr></thead><tbody>`
+    let review_num = 0
+    const options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone };
+    reviewList.rows.forEach(review => {
+      review_num ++
+      review.review_date = new Date(review.review_date).toLocaleDateString('en-US', options)
+      htmlCode += `<tr><td>${review_num}</td>`
+      htmlCode += `<td><a href="/inv/detail/${review.inv_id}">${review.inv_make} ${review.inv_model}</a></td>`
+      htmlCode += `<td>${review.review_date}</td>`
+      htmlCode += `<td><a href="/inv/edit-review/${review.review_id}" title="Edit Review">Edit</a></td>`
+      htmlCode += `<td><a href="/inv/delete-review/${review.review_id}" title="Delete Review">Delete</a></td>`
+  })
+  htmlCode += `</tbody></table>`
+  return htmlCode
+  } catch (err) {
+    console.error("Error retrieving reviews" + err)
+    flash("Error retrieving reviews...")
+    res.redirect("/account/login")
+  }
+  
+}
+
+
+
 module.exports = Util

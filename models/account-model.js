@@ -33,7 +33,7 @@ async function checkExistingEmail(account_email){
 async function getAccountByEmail(account_email) {
   try {
     const result = await pool.query(
-      'SELECT account_id, account_firstname, account_lastname, account_email, account_type, account_password FROM account WHERE account_email = $1',
+      'SELECT account_id, account_firstname, account_lastname, account_email, account_type, account_password, review_screenname FROM account WHERE account_email = $1',
       [account_email])
       console.log("login found")
     return result.rows[0]
@@ -47,7 +47,7 @@ async function getAccountByEmail(account_email) {
 async function getAccountByID(account_id) {
   try {
     const result = await pool.query(
-      'SELECT account_id, account_firstname, account_lastname, account_email, account_type, account_password FROM account WHERE account_id = $1',
+      'SELECT account_id, account_firstname, account_lastname, account_email, account_type, account_password, review_screenname FROM account WHERE account_id = $1',
       [account_id])
       console.log("login found")
     return result.rows[0]
@@ -58,10 +58,9 @@ async function getAccountByID(account_id) {
 /* *****************************
 *   Update account
 * *************************** */
-async function updateAccount(account_id, account_firstname, account_lastname, account_email){
+async function updateAccount(account_id, account_firstname, account_lastname, account_email, review_screenname){
   try {
-    //const sql = `UPDATE account SET account_firstname = '${account_firstname}', account_lastname = '${account_lastname}', account_email = '${account_email}' WHERE account_id = ${account_id}`
-    return await pool.query(`UPDATE account SET account_firstname = $2, account_lastname = $3, account_email = $4 WHERE account_id = $1`, [account_id, account_firstname, account_lastname, account_email])
+    return await pool.query(`UPDATE account SET account_firstname = $2, account_lastname = $3, account_email = $4, review_screenname = $5 WHERE account_id = $1`, [account_id, account_firstname, account_lastname, account_email, review_screenname])
   } catch (error) {
     return error.message
   }
@@ -78,4 +77,31 @@ async function changePassword(account_password, account_id){
     return error.message
   }
 }
-  module.exports = { registerAccount, checkExistingEmail, getAccountByEmail, updateAccount, changePassword, getAccountByID}
+
+/* *****************************
+*   Change Password
+* *************************** */
+async function checkExistingScreenname(review_screenname){
+  try {
+    const sql = "SELECT * FROM account WHERE review_screenname = $1"
+    const screennameCount = await pool.query(sql, [review_screenname])
+    if (screennameCount.rowCount === 0) {
+      return false 
+    }
+    return true
+  } catch (error) {
+    console.error(error.message)
+    return false
+  }
+
+}  
+
+module.exports = { 
+  registerAccount, 
+  checkExistingEmail, 
+  getAccountByEmail, 
+  updateAccount, 
+  changePassword, 
+  getAccountByID, 
+  checkExistingScreenname
+}
