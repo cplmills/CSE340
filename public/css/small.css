@@ -64,7 +64,6 @@
         display: block;
     }
 
-
     #invItem_Image {
       display: block;
       padding: 1rem 0;
@@ -73,8 +72,10 @@
     
     #invItem_Details {
       display: block;
+      width: 100%;
       padding: 0 1rem;
       float: none;
+      max-width: none;
     }
   
     .namePrice {
@@ -89,7 +90,7 @@
     .polaroid {
       display: block;
       transform: none;
-      width: 100%; /* Make it full-width on smaller screens */
+      width: 98%; /* Make it full-width on smaller screens */
       max-width: none; /* Remove the maximum width */
       margin: 0; /* Use percentage for margin */
       padding: 0; /* Use percentage for padding */
@@ -104,4 +105,11 @@
       width: 90%;
       margin: 0;
     }
+
+    ol {
+      margin-left: 0;
+      padding-left: 0;
+      max-width: 98%;
+    }
+
   }
