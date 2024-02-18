@@ -39,8 +39,7 @@ Util.buildClassificationGrid = async function(data){
       grid += '<a href="'+link
       + '" title="View ' + vehicle.inv_make + ' '+ vehicle.inv_model 
       + 'details"><img src="' + vehicle.inv_thumbnail 
-      +'" alt="Image of '+ vehicle.inv_make + ' ' + vehicle.inv_model 
-      +' on CSE Motors" /></a>'
+      +'" alt="' + vehicle.inv_make + ' ' + vehicle.inv_model + ' /></a>'
       grid += '<div class="namePrice">'
       grid += '<hr />'
       grid += '<h2>'
@@ -70,8 +69,7 @@ Util.buildInventoryItem = async function(invitem){
       item += '<div id="invWrapper">'
       item += '<div id="invItem_Image">'
       item +=  '<img src="' + data.inv_image 
-      +'" class="polaroid" alt="Image of '+ data.inv_color + ' ' + data.inv_make + ' ' + data.inv_model 
-      +' on CSE Motors" /></div>'
+      +'" class="polaroid" alt= ' + data.inv_color + ' ' + data.inv_make + ' ' + data.inv_model +'/></div>'
       
       item += '<div id="invItem_Details">'
       item += '<h2>'
